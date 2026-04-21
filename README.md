@@ -24,3 +24,4 @@ The project treats models and embeddings as infrastructure and builds around thr
 - observability
 
 This repository is being developed with protected `main`, PR-only changes, and incremental CI enforcement to keep architecture, reliability, and governance aligned from the start.
+
