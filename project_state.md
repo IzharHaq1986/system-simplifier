@@ -87,6 +87,17 @@ Establish a factual baseline of the current system direction, intended workflows
 - production scaling decisions
 - detailed API specification beyond planning needs
 
+Add or finalize a section with these items only:
+active lens
+audit scope
+intended workflows
+happy-path request lifecycle
+failure-path lifecycle headings
+known gaps:
+evaluation
+guardrails
+observability
+
 ---
 
 ## Phase 2 — Target Architecture Design
