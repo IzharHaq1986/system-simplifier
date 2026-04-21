@@ -48,109 +48,329 @@ Document current-state architecture:
 - Lower regression risk
 - Improved reliability
 
-## Phase 1 — Lens & Audit Scope
+## Full Phase Architecture
 
-### Active Lens
-Primary: Staff / Principal Architect  
-Secondary: SRE / Operations Engineer
-
-### Lens Application
-
-#### Architect Lens Focus
-- Define system boundaries
-- Identify duplicated or overlapping components
-- Evaluate ownership and responsibilities
-- Assess interface clarity between components
-- Highlight unnecessary pipeline complexity
-
-#### SRE Lens Focus
-- Identify what is currently observable vs invisible
-- Assess logging, metrics, and tracing coverage
-- Detect failure points with poor visibility
-- Identify gaps in evaluation and monitoring
-- Highlight areas with high operational risk
+### Project Goal
+Move from pipeline-heavy system building to a simpler AI system architecture built around fewer, stronger components, with models and embeddings treated as infrastructure and with evaluation, guardrails, and observability designed in from the start.
 
 ---
 
 ## Phase 1 — Current-State Mapping
 
-### Goal
-Establish a factual baseline of the current AI system before proposing simplification.
+### Objective
+Establish a factual baseline of the current system direction, intended workflows, architectural assumptions, and known reliability gaps before implementation expands.
 
-### Audit Areas
-1. Existing pipelines and workflows
-2. Duplicated components or logic
-3. Model usage and routing
-4. Embedding usage and ownership
-5. Evaluation gaps
-6. Guardrail gaps
-7. Observability gaps
-8. Top pain points
+### Scope
+- document intended workflows
+- define active planning lens (Architect + SRE)
+- identify architectural concerns early
+- map reliability concerns
+- avoid premature implementation assumptions
 
-### Current Findings
-- Existing pipelines: TBD
-- Duplicated logic: TBD
-- Model usage: TBD
-- Embedding usage: TBD
-- Evaluation gaps: TBD
-- Guardrail gaps: TBD
-- Observability gaps: TBD
-- Top pain points: TBD
+### Key Outputs
+- Phase 1 lens and audit scope
+- workflows and request paths
+- happy-path request lifecycle
+- failure-path lifecycles
+- failure comparison matrix
+- initial understanding of gaps in evaluation, guardrails, and observability
 
 ### Exit Criteria
-- Current system inventory documented
-- Major duplication identified
-- Critical gaps clearly visible
-- Ready for Phase 2 target architecture design
+- intended workflows are explicitly documented
+- request lifecycle is defined end-to-end
+- major runtime failure classes are identified
+- architecture decisions can move into structured component design
 
-### Audit Scope
-
-#### 1. Pipelines & Workflows
-- What pipelines currently exist?
-- What problems do they solve?
-- Where is duplication present?
-
-#### 2. Models & Embeddings
-- How are models accessed and used?
-- How are embeddings generated, stored, and versioned?
-- Are these treated as shared infrastructure or app-level logic?
-
-#### 3. Component Boundaries
-- What are the main system components?
-- Are responsibilities clearly separated?
-- Where are boundaries unclear or leaking?
-
-#### 4. Evaluation
-- Are there defined evaluation datasets?
-- Is regression testing in place?
-- Can output quality be measured consistently?
-
-#### 5. Guardrails
-- Are there input/output validation mechanisms?
-- Are policy checks centralized or scattered?
-- What failure modes are unhandled?
-
-#### 6. Observability
-- What logs, metrics, or traces exist?
-- Can failures be diagnosed quickly?
-- Are latency, cost, and quality tracked?
-
-#### 7. Pain Points
-- What are the top recurring issues?
-- Where do failures go unnoticed?
-- What is hardest to debug or maintain?
+### Out of Scope
+- code implementation
+- service deployment design
+- production scaling decisions
+- detailed API specification beyond planning needs
 
 ---
 
-### Operating Rule (Phase 1)
-- No redesign decisions without evidence
-- No new components introduced
-- Document first, simplify later
+## Phase 2 — Target Architecture Design
+
+### Objective
+Define the target logical architecture of the system using a small number of reusable, high-value components with clear responsibilities and boundaries.
+
+### Scope
+- map workflows to components
+- classify components as runtime or supporting/control-plane
+- define component ownership boundaries
+- define interface boundaries
+- separate core infrastructure from operational/control concerns
+
+### Key Outputs
+- shared component map
+- component classification
+- ownership model
+- input/output boundaries for each core component
+- cross-component rules
+- architectural separation between runtime path and control-plane
+
+### Exit Criteria
+- each major workflow maps to reusable components
+- each core component has explicit responsibilities
+- component boundaries are clear enough to guide implementation
+- architecture is stable enough for minimum build planning
+
+### Out of Scope
+- deployment topology
+- microservices decomposition
+- advanced infra decisions
+- performance tuning
 
 ---
 
+## Phase 3 — Minimum Build Plan
+
+### Objective
+Define the smallest implementation plan that proves the architecture under normal and failure conditions without overbuilding the system.
+
+### Scope
+- identify the minimum runtime path to implement
+- define first implementation slice
+- define build order
+- define what is intentionally deferred
+- ensure runtime traceability and basic reliability from the start
+
+### Key Outputs
+- minimum build scope
+- implementation order
+- scope control plan
+- first implementation slice
+- first code-level implementation target
+- minimum success criteria
+
 ### Exit Criteria
-- Clear inventory of current system
-- Duplication and boundary issues identified
-- Observability and evaluation gaps visible
-- Ready for Phase 2 (Target Architecture Design)
+- minimum build path is clear
+- first implementation slice is narrow and testable
+- deferred scope is documented
+- architecture can move into repository/module planning
+
+### Out of Scope
+- full feature set
+- evaluation engine maturity
+- advanced observability platform
+- rich user experience features
+- scaling and optimization work
+
+---
+
+## Phase 4 — Repository and Module Architecture
+
+### Objective
+Translate the logical architecture into a clean, minimal repository structure and module layout that preserves boundaries during implementation.
+
+### Scope
+- define repository folder structure
+- define module boundaries
+- define file responsibilities
+- define app-layer separation
+- define testing structure
+- define configuration placement
+- define logging and trace propagation structure
+
+### Key Outputs
+- repository scaffold
+- file/folder architecture
+- code-layer responsibilities
+- module isolation rules
+- initial testing layout
+- implementation order by file/module
+
+### Exit Criteria
+- repository structure supports the minimum build cleanly
+- each module has one clear responsibility
+- architecture boundaries survive translation into code structure
+- ready to begin actual implementation file by file
+
+### Out of Scope
+- adding future-phase folders prematurely
+- distributed service layout
+- separate repositories
+- infrastructure-as-code
+
+---
+
+## Phase 5 — Runtime Reliability and Control Architecture
+
+### Objective
+Define the operational behavior of the runtime system under normal, degraded, and failing conditions.
+
+### Scope
+- define retry policy
+- define fallback policy
+- define degraded-response policy
+- define boundary-safe failure handling
+- define minimum runtime observability behavior
+
+### Key Outputs
+- retry rules
+- fallback rules
+- degraded-response rules
+- boundary-safe failure handling model
+- request traceability baseline
+- logging/event expectations
+
+### Exit Criteria
+- failure behavior is explicit
+- degraded modes are controlled
+- retries and fallbacks are bounded
+- architecture can be validated under stress without ambiguity
+
+### Out of Scope
+- full incident runbooks
+- advanced alerting
+- autoscaling behavior
+- full SRE platform design
+
+---
+
+## Phase 6 — Evaluation, Guardrails, and Observability Expansion
+
+### Objective
+Expand the three critical system quality areas identified at project start: evaluation, guardrails, and observability.
+
+### Scope
+- define evaluation approach
+- define lightweight quality measurement
+- define guardrail maturity path
+- define observability maturity path
+- define what signals must exist before system expansion
+
+### Key Outputs
+- evaluation framework plan
+- basic scoring and review approach
+- guardrail expansion path
+- observability maturity plan
+- quality visibility goals
+
+### Exit Criteria
+- quality is measurable at a basic level
+- guardrails are no longer implicit
+- observability extends beyond minimal logs
+- system is ready for deeper confidence-building work
+
+### Out of Scope
+- full benchmark program
+- complex dashboards
+- advanced policy engines
+- large-scale quality automation
+
+---
+
+## Phase 7 — Delivery and Governance Architecture
+
+### Objective
+Ensure the repo, PR workflow, CI/CD controls, and governance model support the intended system architecture and reliability goals.
+
+### Scope
+- branch protection alignment
+- PR workflow discipline
+- CI gate definition
+- release path planning
+- testing expectations
+- repository governance alignment
+
+### Key Outputs
+- PR-only workflow baseline
+- CI expectations
+- delivery path
+- release safety checks
+- governance rules tied to architecture quality
+
+### Exit Criteria
+- changes flow through guarded PR path
+- basic CI gates exist or are planned
+- delivery model supports system safety and reliability
+- repo governance matches the architectural intent
+
+### Out of Scope
+- advanced deployment automation
+- complex multi-environment release orchestration
+- enterprise governance overhead
+
+---
+
+## Phase 8 — Post-Minimum-Build Expansion
+
+### Objective
+Expand the system only after the architecture, reliability baseline, and minimum build are proven.
+
+### Scope
+- refine components based on evidence
+- add deeper evaluation
+- improve observability
+- expand retrieval and model capabilities carefully
+- revisit deferred items only when justified
+
+### Key Outputs
+- evidence-based expansion roadmap
+- validated improvement priorities
+- controlled feature growth
+- architecture refinements grounded in real behavior
+
+### Exit Criteria
+- minimum system has been proven
+- expansion decisions are evidence-driven
+- deferred complexity is added only when justified
+
+### Out of Scope
+- speculative capability expansion
+- adding features because they seem impressive
+- introducing architectural complexity without measured need
+
+---
+
+## Cross-Phase Rules
+
+### 1. Evidence before expansion
+Do not add architectural complexity until current behavior is understood.
+
+### 2. Fewer, stronger components
+Prefer shared infrastructure components over many narrow pipelines.
+
+### 3. Runtime path stays simple
+Keep the live request path clean, observable, and boundary-safe.
+
+### 4. Control-plane concerns stay separate
+Evaluation, observability, and delivery governance should support the runtime path without bloating it.
+
+### 5. No premature distribution
+Logical component separation does not imply microservices or distributed deployment.
+
+### 6. Traceability from day one
+Every implemented request path must be traceable from entry to result.
+
+### 7. Deferred scope is intentional
+Not building something yet is a design decision, not a missing idea.
+
+---
+
+## Phase Progression Model
+
+Phase 1:
+- understand and define the system clearly
+
+Phase 2:
+- shape the architecture into reusable components
+
+Phase 3:
+- define the smallest build that proves the design
+
+Phase 4:
+- map architecture into repository/module structure
+
+Phase 5:
+- define runtime reliability behavior
+
+Phase 6:
+- strengthen evaluation, guardrails, and observability
+
+Phase 7:
+- align delivery and governance with system quality
+
+Phase 8:
+- expand only after evidence justifies it
