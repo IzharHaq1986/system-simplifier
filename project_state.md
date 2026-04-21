@@ -303,6 +303,28 @@ Ensure the repo, PR workflow, CI/CD controls, and governance model support the i
 - complex multi-environment release orchestration
 - enterprise governance overhead
 
+### Governance Milestone — Repo Guardrails Active
+Status:
+- main branch is protected
+- PR-only merge flow enforced
+- required status check enabled:
+  - Lint, Security, and Tests
+- branch must be up to date before merge
+- enforcement verified via test PR
+
+Implication:
+- CI is now an enforcement layer, not informational
+- no unverified code can reach main
+- repository governance aligns with system reliability goals
+
+Scope:
+- applies to all future changes in this repo
+- baseline for expanding CI checks in later phases
+
+Note:
+- additional checks (security, container scan, SBOM, etc.) will be added incrementally
+- guardrails expansion will follow Phase 3 and Phase 5 progression
+
 ---
 
 ## Phase 8 — Post-Minimum-Build Expansion
