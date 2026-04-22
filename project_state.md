@@ -134,7 +134,7 @@ Define the target logical architecture of the system using a small number of reu
 
 ---
 
-## Phase 3 — Minimum Build Plan
+## Phase 3 — Minimum Build Plan (In Progress 🚧)
 
 ### Objective
 Define the smallest implementation plan that proves the architecture under normal and failure conditions without overbuilding the system.
@@ -166,6 +166,13 @@ Define the smallest implementation plan that proves the architecture under norma
 - advanced observability platform
 - rich user experience features
 - scaling and optimization work
+
+#### Guardrails Layer (Input Control) — Completed
+* Input normalization added (whitespace trimming)
+* Whitespace-only input rejection enforced
+* Request boundary validation strengthened
+* Trace ID preserved on rejected requests
+* Guardrail behavior covered by automated tests
 
 ---
 

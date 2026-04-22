@@ -56,6 +56,18 @@ def test_simplify_rejects_whitespace_only_text():
     assert response.status_code == 422
     assert "X-Trace-ID" in response.headers
 
+def test_simplify_rejects_unsupported_control_characters():
+    # Unsupported control characters should be rejected deterministically
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Hello\u0000World"},
+    )
+
+    body = response.json()
+
+    assert response.status_code == 422
+    assert body["detail"] == "Input contains unsupported control characters."
+    assert "X-Trace-ID" in response.headers
 
 def test_simplify_rejects_empty_text():
     # Empty payload should be rejected by schema validation
@@ -66,3 +78,4 @@ def test_simplify_rejects_empty_text():
 
     assert response.status_code == 422
     assert "X-Trace-ID" in response.headers
+
