@@ -10,6 +10,7 @@ on:
 
 jobs:
   ci:
+    name: Lint, Security, and Tests
     runs-on: ubuntu-latest
 
     steps:
