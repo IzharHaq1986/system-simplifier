@@ -17,6 +17,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check repo hygiene
+        run: |
+          # Fail if tracked files include Python cache or virtual environment artifacts
+          if git ls-files | grep -E '(^|/)(__pycache__/|.*\.pyc$|venv/)' > /dev/null; then
+            echo "Tracked local artifacts detected."
+            echo "Remove __pycache__, .pyc, or venv files from the repository."
+            exit 1
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
