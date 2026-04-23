@@ -72,9 +72,10 @@ def test_simplify_rejects_unsupported_control_characters():
     body = response.json()
 
     assert response.status_code == 422
-    assert body["detail"] == "Input contains unsupported control characters."
-    assert "X-Trace-ID" in response.headers
-
+    assert body["error"]["code"] == "invalid_input"
+    assert body["error"]["message"] == "Input contains unsupported control characters."
+    assert "trace_id" in body
+    assert body["trace_id"] == response.headers["X-Trace-ID"]
 
 def test_simplify_rejects_empty_text():
     # Empty payload should be rejected by schema validation
