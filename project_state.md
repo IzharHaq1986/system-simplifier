@@ -202,6 +202,18 @@ Define the smallest implementation plan that proves the architecture under norma
   * pull request template
   * CI repo hygiene check
 
+#### Repo-Level Enforcement — Completed
+
+* Pre-flight checklist added:
+  * `PRE_FLIGHT_CHECK.md`
+* Pull request structure enforcement added:
+  * `.github/pull_request_template.md`
+  * CI validation for required PR sections
+* Pre-flight acknowledgement enforcement added:
+  * CI validation for `## Pre-Flight Check`
+* Repo hygiene enforcement added:
+  * CI fails on tracked `__pycache__`, `.pyc`, or `venv/` artifacts
+
 ---
 
 ## Phase 4 — Repository and Module Architecture
