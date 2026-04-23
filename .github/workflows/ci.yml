@@ -17,6 +17,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Enforce PR template usage
+      if: github.event_name == 'pull_request'
+      run: |
+        BODY="${{ github.event.pull_request.body }}"
+
+        # Fail if required sections are missing
+        echo "$BODY" | grep -q "## Summary" || (echo "Missing '## Summary' section"; exit 1)
+        echo "$BODY" | grep -q "## Description" || (echo "Missing '## Description' section"; exit 1)
+        echo "$BODY" | grep -q "## Scope Check" || (echo "Missing '## Scope Check' section"; exit 1)
+        echo "$BODY" | grep -q "## Validation" || (echo "Missing '## Validation' section"; exit 1)
+
       - name: Check repo hygiene
         run: |
           # Fail if tracked files include Python cache or virtual environment artifacts
