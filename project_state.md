@@ -174,6 +174,34 @@ Define the smallest implementation plan that proves the architecture under norma
 * Trace ID preserved on rejected requests
 * Guardrail behavior covered by automated tests
 
+#### Completed
+
+* Minimum build scope defined
+* First implementation slice completed:
+
+  * Input Gateway
+  * Request schema
+  * Trace ID baseline
+* Guardrails slice completed:
+
+  * input normalization
+  * whitespace-only rejection
+  * deterministic control-character rejection
+  * stable validation error contract
+* Automated tests added for:
+
+  * health endpoint
+  * simplify valid request
+  * whitespace normalization
+  * schema-level rejection
+  * deterministic guardrail rejection
+  * trace ID propagation on success and failure
+* Repo-level enforcement added:
+
+  * pre-flight checklist
+  * pull request template
+  * CI repo hygiene check
+
 ---
 
 ## Phase 4 — Repository and Module Architecture
