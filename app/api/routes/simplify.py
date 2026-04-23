@@ -2,11 +2,12 @@ from fastapi import APIRouter, HTTPException, Request
 
 from app.core.input_guardrails import get_input_rejection_reason
 from app.models.request import SimplifyRequest
+from app.models.response import SimplifyResponse
 
 router = APIRouter()
 
 
-@router.post("/v1/simplify")
+@router.post("/v1/simplify", response_model=SimplifyResponse)
 def simplify(request: Request, payload: SimplifyRequest):
     """
     Minimal validation endpoint.
@@ -19,8 +20,8 @@ def simplify(request: Request, payload: SimplifyRequest):
     if rejection_reason:
         raise HTTPException(status_code=422, detail=rejection_reason)
 
-    return {
-        "status": "accepted",
-        "text_length": len(payload.text),
-        "trace_id": request.state.trace_id,
-    }
+    return SimplifyResponse(
+        status="accepted",
+        text_length=len(payload.text),
+        trace_id=request.state.trace_id,
+    )

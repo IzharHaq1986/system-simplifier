@@ -24,11 +24,11 @@ def test_simplify_accepts_valid_request():
     body = response.json()
 
     assert response.status_code == 200
+    assert set(body.keys()) == {"status", "text_length", "trace_id"}
     assert body["status"] == "accepted"
     assert body["text_length"] == len("Simplify this system design.")
     assert "trace_id" in body
     assert body["trace_id"] == response.headers["X-Trace-ID"]
-
 
 def test_simplify_trims_surrounding_whitespace():
     # Surrounding whitespace should be normalized before processing
