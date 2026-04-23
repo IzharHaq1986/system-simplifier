@@ -214,6 +214,24 @@ Define the smallest implementation plan that proves the architecture under norma
 * Repo hygiene enforcement added:
   * CI fails on tracked `__pycache__`, `.pyc`, or `venv/` artifacts
 
+#### API Contract Hardening — Completed
+
+* Typed success response added:
+  * `SimplifyResponse`
+* Stable error response added:
+  * `ErrorResponse`
+* Deterministic guardrail failures now return:
+  * machine-readable error code
+  * human-readable error message
+  * trace-aware response body
+* OpenAPI contract updated for `/v1/simplify`:
+  * success response documented
+  * `422` error response documented
+* Test coverage strengthened for:
+  * success response shape
+  * validation failure shape
+  * deterministic guardrail failure shape
+
 ---
 
 ## Phase 4 — Repository and Module Architecture
