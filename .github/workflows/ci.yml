@@ -19,23 +19,69 @@ jobs:
       - name: Enforce PR template usage
         if: github.event_name == 'pull_request'
         run: |
-          BODY="${{ github.event.pull_request.body }}"
+          set -euo pipefail
 
-          echo "$BODY" | grep -q "## Summary" || (echo "Missing '## Summary' section"; exit 1)
-          echo "$BODY" | grep -q "## Description" || (echo "Missing '## Description' section"; exit 1)
-          echo "$BODY" | grep -q "## Scope Check" || (echo "Missing '## Scope Check' section"; exit 1)
-          echo "$BODY" | grep -q "## Validation" || (echo "Missing '## Validation' section"; exit 1)
+          python - <<'PY'
+          import json
+          import os
+          import sys
+
+          event_path = os.environ["GITHUB_EVENT_PATH"]
+
+          with open(event_path, "r", encoding="utf-8") as file:
+              event = json.load(file)
+
+          pr = event.get("pull_request") or {}
+          body = pr.get("body") or ""
+
+          required_sections = [
+              "## Summary",
+              "## Problem Statement",
+              "## Motivation",
+              "## Implementation",
+              "## Validation",
+              "## Pre-Flight Check",
+          ]
+
+          missing_sections = [section for section in required_sections if section not in body]
+
+          if missing_sections:
+              print("Missing required PR sections:")
+              for section in missing_sections:
+                  print(f"- {section}")
+              sys.exit(1)
+
+          print("PR template enforcement passed.")
+          PY
 
       - name: Enforce Pre-Flight Checklist acknowledgement
         if: github.event_name == 'pull_request'
         run: |
-          BODY="${{ github.event.pull_request.body }}"
+          set -euo pipefail
 
-          # Require explicit acknowledgement of the checklist
-          echo "$BODY" | grep -q "## Pre-Flight Check" || (echo "Missing '## Pre-Flight Check' section"; exit 1)
+          python - <<'PY'
+          import json
+          import os
+          import sys
 
-          # Require at least one checked item
-          echo "$BODY" | grep -q "\- \[x\]" || (echo "Pre-Flight checklist not acknowledged"; exit 1)
+          event_path = os.environ["GITHUB_EVENT_PATH"]
+
+          with open(event_path, "r", encoding="utf-8") as file:
+              event = json.load(file)
+
+          pr = event.get("pull_request") or {}
+          body = pr.get("body") or ""
+
+          if "## Pre-Flight Check" not in body:
+              print("Missing '## Pre-Flight Check' section")
+              sys.exit(1)
+
+          if "- [x]" not in body and "- [X]" not in body:
+              print("Pre-Flight checklist not acknowledged")
+              sys.exit(1)
+
+          print("Pre-Flight checklist enforcement passed.")
+          PY
 
       - name: Check repo hygiene
         run: |
