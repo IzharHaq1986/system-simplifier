@@ -9,13 +9,19 @@ from app.models.response import SimplifyResponse
 router = APIRouter()
 
 
-@router.post("/v1/simplify", response_model=SimplifyResponse)
+@router.post(
+    "/v1/simplify",
+    response_model=SimplifyResponse,
+    responses={
+        422: {
+            "model": ErrorResponse,
+            "description": "Invalid input rejected by validation or deterministic guardrails.",
+        }
+    },
+)
 def simplify(request: Request, payload: SimplifyRequest):
     """
     Minimal validation endpoint.
-
-    Business logic is intentionally deferred.
-    This route proves that request validation and trace propagation are active.
     """
     rejection_reason = get_input_rejection_reason(payload.text)
 
