@@ -5,8 +5,7 @@ on:
     branches:
       - main
   pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   ci:
@@ -17,12 +16,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Enforce PR template usage
+        if: github.event_name == 'pull_request'
+        run: |
+          BODY="${{ github.event.pull_request.body }}"
+
+          echo "$BODY" | grep -q "## Summary" || (echo "Missing '## Summary' section"; exit 1)
+          echo "$BODY" | grep -q "## Description" || (echo "Missing '## Description' section"; exit 1)
+          echo "$BODY" | grep -q "## Scope Check" || (echo "Missing '## Scope Check' section"; exit 1)
+          echo "$BODY" | grep -q "## Validation" || (echo "Missing '## Validation' section"; exit 1)
+
       - name: Check repo hygiene
         run: |
-          # Fail if tracked files include Python cache or virtual environment artifacts
           if git ls-files | grep -E '(^|/)(__pycache__/|.*\.pyc$|venv/)' > /dev/null; then
             echo "Tracked local artifacts detected."
-            echo "Remove __pycache__, .pyc, or venv files from the repository."
             exit 1
           fi
 
