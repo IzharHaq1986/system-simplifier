@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
 from app.core.input_guardrails import get_input_rejection_reason
+from app.execution.decision import build_execution_decision
 from app.models.error import ErrorResponse
 from app.models.request import SimplifyRequest
 from app.models.response import SimplifyResponse
@@ -26,7 +27,7 @@ router = APIRouter()
 )
 def simplify(request: Request, payload: SimplifyRequest):
     """
-    Minimal validation endpoint with deterministic policy evaluation.
+    Minimal validation endpoint with deterministic policy and execution decisions.
     """
     rejection_reason = get_input_rejection_reason(payload.text)
 
@@ -61,6 +62,11 @@ def simplify(request: Request, payload: SimplifyRequest):
             status_code=403,
             content=error_response.model_dump(),
         )
+
+    # Build the execution decision only after policy allows the request.
+    # This prepares the route for future execution without running models or tools.
+    execution_decision = build_execution_decision()
+    _ = execution_decision
 
     return SimplifyResponse(
         status="accepted",
