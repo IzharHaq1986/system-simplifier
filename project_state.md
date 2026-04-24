@@ -202,6 +202,22 @@ Define the smallest implementation plan that proves the architecture under norma
   * pull request template
   * CI repo hygiene check
 
+**Controlled Execution Boundary**
+
+* Typed policy decision model added
+* Pure policy evaluator added
+* Policy evaluation integrated into `POST /v1/simplify`
+* Policy denial returns deterministic `403`
+* Policy denial uses stable `policy_denied` error code
+* Trace ID preserved on policy denial path
+* Guardrails confirmed to run before policy evaluation
+* Route tests added for:
+  * allow path
+  * deny path
+  * error contract
+  * trace ID propagation
+  * boundary ordering
+
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
@@ -419,6 +435,18 @@ Expand the system only after the architecture, reliability baseline, and minimum
 - speculative capability expansion
 - adding features because they seem impressive
 - introducing architectural complexity without measured need
+
+---
+
+## Next Focus
+
+* Move from static policy denial → execution decision result shaping
+* Add a minimal internal execution plan/decision object before future model or tool use
+* Maintain:
+  * deterministic behavior
+  * full test coverage
+  * CI-enforced workflow
+  * no premature model/tool integration
 
 ---
 
