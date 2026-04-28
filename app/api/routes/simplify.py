@@ -10,6 +10,8 @@ from app.models.request import SimplifyRequest
 from app.models.response import SimplifyResponse
 from app.policy.evaluator import evaluate_policy
 from app.response_policy.evaluator import evaluate_response_policy
+from app.telemetry.builder import build_execution_telemetry_event
+from app.telemetry.sink import emit_execution_telemetry
 
 router = APIRouter()
 
@@ -99,4 +101,28 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
             content=error_response.model_dump(),
         )
 
+        telemetry_event = build_execution_telemetry_event(
+            trace_id=request.state.trace_id,
+            decision=execution_decision,
+            result=execution_result,
+            text_length=len(payload.text),
+        )
+
+        emit_execution_telemetry(telemetry_event)
+
+
     return shaped_response
+
+def test_simplify_response_does_not_expose_telemetry_fields(client):
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Hello telemetry boundary"},
+    )
+
+    assert response.status_code == 200
+
+    body = response.json()
+
+    assert "stage" not in body
+    assert "decision_allowed" not in body
+    assert "execution_status" not in body
