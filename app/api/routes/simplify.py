@@ -9,6 +9,7 @@ from app.models.error import ErrorResponse
 from app.models.request import SimplifyRequest
 from app.models.response import SimplifyResponse
 from app.policy.evaluator import evaluate_policy
+from app.response_policy.evaluator import evaluate_response_policy
 
 router = APIRouter()
 
@@ -24,6 +25,10 @@ router = APIRouter()
         422: {
             "model": ErrorResponse,
             "description": "Invalid input rejected by validation or deterministic guardrails.",
+        },
+        500: {
+            "model": ErrorResponse,
+            "description": "Response denied by response policy boundary.",
         },
     },
 )
@@ -72,8 +77,26 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
 
     execution_result = build_execution_result()
 
-    return shape_simplify_response(
+    shaped_response = shape_simplify_response(
         execution_result=execution_result,
         text_length=len(payload.text),
         trace_id=request.state.trace_id,
     )
+
+    response_policy_decision = evaluate_response_policy(shaped_response)
+
+    if response_policy_decision.decision == "deny":
+        error_response = ErrorResponse(
+            error={
+                "code": "response_policy_denied",
+                "message": "Response denied by response policy.",
+            },
+            trace_id=request.state.trace_id,
+        )
+
+        return JSONResponse(
+            status_code=500,
+            content=error_response.model_dump(),
+        )
+
+    return shaped_response

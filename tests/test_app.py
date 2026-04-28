@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
-
 from app.main import app
+from app.response_policy.decision import ResponsePolicyDecision
 
 client = TestClient(app)
 
@@ -235,3 +235,55 @@ def test_simplify_success_response_excludes_placeholder_output_fields():
     assert "output" not in response_payload
     assert "result" not in response_payload
     assert "message" not in response_payload
+
+def test_simplify_success_passes_response_policy_boundary():
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Simplify this system design."},
+    )
+
+    assert response.status_code == 200
+
+    response_payload = response.json()
+
+    assert response_payload["status"] == "accepted"
+    assert response_payload["text_length"] == len("Simplify this system design.")
+    assert response_payload["trace_id"] == response.headers["X-Trace-ID"]
+
+def test_simplify_response_policy_denial_returns_stable_error(monkeypatch):
+    def deny_response_policy(_response):
+        return ResponsePolicyDecision(
+            decision="deny",
+            reason_code="response_contract_denied",
+        )
+
+    monkeypatch.setattr(
+        "app.api.routes.simplify.evaluate_response_policy",
+        deny_response_policy,
+    )
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Simplify this system design."},
+    )
+
+    assert response.status_code == 500
+
+    response_payload = response.json()
+
+    assert response_payload["error"]["code"] == "response_policy_denied"
+    assert response_payload["error"]["message"] == "Response denied by response policy."
+    assert response_payload["trace_id"] == response.headers["X-Trace-ID"]
+
+def test_simplify_openapi_documents_response_policy_denial_error():
+    response = client.get("/openapi.json")
+
+    assert response.status_code == 200
+
+    openapi_schema = response.json()
+    simplify_responses = openapi_schema["paths"]["/v1/simplify"]["post"]["responses"]
+
+    assert "500" in simplify_responses
+    assert simplify_responses["500"]["description"] == (
+        "Response denied by response policy boundary."
+    )
