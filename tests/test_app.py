@@ -287,3 +287,17 @@ def test_simplify_openapi_documents_response_policy_denial_error():
     assert simplify_responses["500"]["description"] == (
         "Response denied by response policy boundary."
     )
+
+def test_simplify_response_does_not_expose_telemetry_fields():
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Simplify this telemetry boundary."},
+    )
+
+    assert response.status_code == 200
+
+    body = response.json()
+
+    assert "stage" not in body
+    assert "decision_allowed" not in body
+    assert "execution_status" not in body
