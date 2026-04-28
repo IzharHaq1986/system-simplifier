@@ -218,6 +218,20 @@ Define the smallest implementation plan that proves the architecture under norma
   * trace ID propagation
   * boundary ordering
 
+**Execution Decision Boundary**
+
+* Typed execution decision model added
+* Pure execution decision builder added
+* Execution decision integrated after policy allow
+* No model or tool execution introduced
+* Public API response contract unchanged
+* Unit tests added for execution decision builder
+* Route flow now follows:
+  * validation
+  * guardrails
+  * policy decision
+  * execution decision
+  * success response
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
@@ -440,8 +454,8 @@ Expand the system only after the architecture, reliability baseline, and minimum
 
 ## Next Focus
 
-* Move from static policy denial → execution decision result shaping
-* Add a minimal internal execution plan/decision object before future model or tool use
+* Move from internal execution decision → response shaping or execution result envelope
+* Keep execution no-op until model/tool boundary is explicitly designed
 * Maintain:
   * deterministic behavior
   * full test coverage
