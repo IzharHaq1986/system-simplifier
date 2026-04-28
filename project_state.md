@@ -232,6 +232,18 @@ Define the smallest implementation plan that proves the architecture under norma
   * policy decision
   * execution decision
   * success response
+
+**Response Shaping Boundary**
+
+* Explicit response transformation boundary added
+* Internal execution result translated into public `SimplifyResponse`
+* Internal execution fields prevented from leaking into API response
+* Stable success response contract enforced
+* Trace ID preserved between response body and `X-Trace-ID` header
+* Normalized text length preserved in public response
+* Response shaper rejects unexpected internal execution state
+* Unit and route-level regression tests added
+
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
