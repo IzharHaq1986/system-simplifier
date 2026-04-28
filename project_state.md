@@ -244,6 +244,18 @@ Define the smallest implementation plan that proves the architecture under norma
 * Response shaper rejects unexpected internal execution state
 * Unit and route-level regression tests added
 
+**Response Policy Validation Boundary**
+
+* Typed response policy decision model added
+* Pure response policy evaluator added
+* Response policy integrated after response shaping
+* Response policy denial returns deterministic `500`
+* Stable `response_policy_denied` error code added
+* OpenAPI documents response policy denial path
+* Trace ID preserved on response policy denial path
+* Internal execution field leakage denied before API response
+* Unit and route-level regression tests added
+
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
