@@ -7,6 +7,7 @@ from app.models.error import ErrorResponse
 from app.models.request import SimplifyRequest
 from app.models.response import SimplifyResponse
 from app.policy.evaluator import evaluate_policy
+from app.execution.result import build_execution_result
 
 router = APIRouter()
 
@@ -67,6 +68,11 @@ def simplify(request: Request, payload: SimplifyRequest):
     # This prepares the route for future execution without running models or tools.
     execution_decision = build_execution_decision()
     _ = execution_decision
+
+     # Build the no-op execution result after the execution decision.
+    # This records the prepared execution outcome without running models or tools.
+    execution_result = build_execution_result()
+    _ = execution_result
 
     return SimplifyResponse(
         status="accepted",
