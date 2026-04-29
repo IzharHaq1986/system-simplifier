@@ -256,6 +256,17 @@ Define the smallest implementation plan that proves the architecture under norma
 * Internal execution field leakage denied before API response
 * Unit and route-level regression tests added
 
+**Execution Telemetry Envelope**
+
+- Internal telemetry event model added
+- Telemetry event builder added
+- Internal no-op telemetry sink added
+- Telemetry emitted inside `/v1/simplify`
+- Telemetry remains internal-only
+- API response contract unchanged
+- Regression tests prevent telemetry leakage
+- Route-level test verifies telemetry emission
+
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
