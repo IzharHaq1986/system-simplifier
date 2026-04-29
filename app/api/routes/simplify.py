@@ -108,8 +108,8 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
             content=error_response.model_dump(),
         )
 
-    # Evaluation boundary remains non-blocking in this phase.
-    evaluate_response(shaped_response)
+    # Evaluation remains non-blocking. Its result is recorded only in telemetry.
+    evaluation_decision = evaluate_response(shaped_response)
 
     telemetry_event = build_execution_telemetry_event(
         trace_id=trace_id,
@@ -125,6 +125,8 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
         "status": formatted_telemetry["execution_status"],
         "trace_id": formatted_telemetry["trace_id"],
         "text_length": formatted_telemetry["text_length"],
+        "evaluation_allowed": evaluation_decision.allowed,
+        "evaluation_reason": evaluation_decision.reason,
     }
 
     telemetry_sink.emit(api_telemetry)
