@@ -297,6 +297,27 @@ Define the smallest implementation plan that proves the architecture under norma
   * validation failure shape
   * deterministic guardrail failure shape
 
+### Structured Observability Logging Adapter — Completed
+
+Completed:
+- Added internal `LoggingAdapter` for single-line structured JSON logs.
+- Added observability hook boundary.
+- Added telemetry sink boundary for formatted telemetry.
+- Added observability factory for centralized construction.
+- Added minimal logging configuration.
+- Wired `/v1/simplify` success path to emit structured telemetry.
+- Preserved internal telemetry formatter contract.
+- Added unit tests for adapter, hook, sink, factory, and logging config.
+- Added route-level regression test for telemetry emission.
+- Fixed CI Python import path with explicit `PYTHONPATH`.
+
+Validated:
+- No telemetry exposed through API responses.
+- No external logging dependency introduced.
+- No model or tool execution introduced.
+- Internal telemetry contract remains isolated.
+- CI passed before merge.
+
 ---
 
 ## Phase 4 — Repository and Module Architecture
