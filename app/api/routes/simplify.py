@@ -2,7 +2,6 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
 from app.core.input_guardrails import get_input_rejection_reason
-from app.core.response_shaper import shape_simplify_response
 from app.execution.decision import build_execution_decision
 from app.execution.result import build_execution_result
 from app.models.error import ErrorResponse
@@ -10,6 +9,9 @@ from app.models.request import SimplifyRequest
 from app.models.response import SimplifyResponse
 from app.policy.evaluator import evaluate_policy
 from app.response_policy.evaluator import evaluate_response_policy
+from app.core.response_shaper import shape_simplify_response
+from app.telemetry.builder import build_execution_telemetry_event
+from app.telemetry.sink import emit_execution_telemetry
 
 router = APIRouter()
 
@@ -35,8 +37,8 @@ router = APIRouter()
 def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | JSONResponse:
     """
     Accept a simplify request through explicit validation, guardrail,
-    policy, execution-decision, execution-result, and response-shaping
-    boundaries.
+    policy, execution-decision, execution-result, response-shaping,
+    response-policy, and telemetry boundaries.
 
     No model or tool execution happens in this route yet.
     """
@@ -73,8 +75,6 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
         )
 
     execution_decision = build_execution_decision()
-    _ = execution_decision
-
     execution_result = build_execution_result()
 
     shaped_response = shape_simplify_response(
@@ -98,5 +98,14 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
             status_code=500,
             content=error_response.model_dump(),
         )
+
+    telemetry_event = build_execution_telemetry_event(
+        trace_id=request.state.trace_id,
+        decision=execution_decision,
+        result=execution_result,
+        text_length=len(payload.text),
+    )
+
+    emit_execution_telemetry(telemetry_event)
 
     return shaped_response

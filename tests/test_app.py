@@ -287,3 +287,44 @@ def test_simplify_openapi_documents_response_policy_denial_error():
     assert simplify_responses["500"]["description"] == (
         "Response denied by response policy boundary."
     )
+
+def test_simplify_response_does_not_expose_telemetry_fields():
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Simplify this telemetry boundary."},
+    )
+
+    assert response.status_code == 200
+
+    body = response.json()
+
+    assert "stage" not in body
+    assert "decision_allowed" not in body
+    assert "execution_status" not in body
+
+def test_simplify_emits_internal_execution_telemetry(monkeypatch):
+    captured_events = []
+
+    def capture_telemetry(event):
+        captured_events.append(event)
+
+    monkeypatch.setattr(
+        "app.api.routes.simplify.emit_execution_telemetry",
+        capture_telemetry,
+    )
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Simplify this telemetry boundary."},
+    )
+
+    assert response.status_code == 200
+    assert len(captured_events) == 1
+
+    event = captured_events[0]
+
+    assert event.stage == "execution"
+    assert event.decision_allowed is True
+    assert event.execution_status == "success"
+    assert event.text_length == len("Simplify this telemetry boundary.")
+    assert event.trace_id == response.headers["X-Trace-ID"]
