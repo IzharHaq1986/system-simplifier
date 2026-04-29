@@ -5,6 +5,9 @@ from fastapi.responses import JSONResponse
 from app.api.routes.health import router as health_router
 from app.api.routes.simplify import router as simplify_router
 from app.middleware.trace_id import TraceIDMiddleware
+from app.observability.logging_config import configure_observability_logging
+
+configure_observability_logging()
 
 app = FastAPI()
 

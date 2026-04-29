@@ -2,18 +2,23 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
 from app.core.input_guardrails import get_input_rejection_reason
+from app.core.response_shaper import shape_simplify_response
 from app.execution.decision import build_execution_decision
 from app.execution.result import build_execution_result
 from app.models.error import ErrorResponse
 from app.models.request import SimplifyRequest
 from app.models.response import SimplifyResponse
+from app.observability.factory import build_telemetry_sink
 from app.policy.evaluator import evaluate_policy
 from app.response_policy.evaluator import evaluate_response_policy
-from app.core.response_shaper import shape_simplify_response
 from app.telemetry.builder import build_execution_telemetry_event
+from app.telemetry.formatter import format_execution_telemetry_event
 from app.telemetry.sink import emit_execution_telemetry
 
+
 router = APIRouter()
+
+telemetry_sink = build_telemetry_sink()
 
 
 @router.post(
@@ -38,10 +43,13 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
     """
     Accept a simplify request through explicit validation, guardrail,
     policy, execution-decision, execution-result, response-shaping,
-    response-policy, and telemetry boundaries.
+    response-policy, telemetry, and observability boundaries.
 
     No model or tool execution happens in this route yet.
     """
+
+    trace_id = request.state.trace_id
+
     rejection_reason = get_input_rejection_reason(payload.text)
 
     if rejection_reason:
@@ -50,7 +58,7 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
                 "code": "invalid_input",
                 "message": rejection_reason,
             },
-            trace_id=request.state.trace_id,
+            trace_id=trace_id,
         )
 
         return JSONResponse(
@@ -66,7 +74,7 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
                 "code": "policy_denied",
                 "message": "Request denied by policy.",
             },
-            trace_id=request.state.trace_id,
+            trace_id=trace_id,
         )
 
         return JSONResponse(
@@ -80,7 +88,7 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
     shaped_response = shape_simplify_response(
         execution_result=execution_result,
         text_length=len(payload.text),
-        trace_id=request.state.trace_id,
+        trace_id=trace_id,
     )
 
     response_policy_decision = evaluate_response_policy(shaped_response)
@@ -91,7 +99,7 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
                 "code": "response_policy_denied",
                 "message": "Response denied by response policy.",
             },
-            trace_id=request.state.trace_id,
+            trace_id=trace_id,
         )
 
         return JSONResponse(
@@ -100,11 +108,22 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
         )
 
     telemetry_event = build_execution_telemetry_event(
-        trace_id=request.state.trace_id,
+        trace_id=trace_id,
         decision=execution_decision,
         result=execution_result,
         text_length=len(payload.text),
     )
+
+    formatted_telemetry = format_execution_telemetry_event(telemetry_event)
+
+    api_telemetry = {
+        "event_type": "simplify.execution",
+        "status": formatted_telemetry["execution_status"],
+        "trace_id": formatted_telemetry["trace_id"],
+        "text_length": formatted_telemetry["text_length"],
+    }
+
+    telemetry_sink.emit(api_telemetry)
 
     emit_execution_telemetry(telemetry_event)
 

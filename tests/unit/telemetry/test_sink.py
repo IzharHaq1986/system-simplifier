@@ -44,3 +44,34 @@ def test_emit_execution_telemetry_uses_internal_formatter(monkeypatch):
     emit_execution_telemetry(event)
 
     assert captured_events == [event]
+
+def test_emit_execution_telemetry_calls_observability_hook(monkeypatch):
+    event = ExecutionTelemetryEvent(
+        trace_id="trace-123",
+        stage="execution",
+        decision_allowed=True,
+        execution_status="success",
+        text_length=25,
+    )
+
+    captured_payloads = []
+
+    def capture_hook_call(formatted_event):
+        captured_payloads.append(formatted_event)
+
+    monkeypatch.setattr(
+        "app.telemetry.sink.handle_structured_telemetry",
+        capture_hook_call,
+    )
+
+    emit_execution_telemetry(event)
+
+    assert captured_payloads == [
+        {
+            "trace_id": "trace-123",
+            "stage": "execution",
+            "decision_allowed": True,
+            "execution_status": "success",
+            "text_length": 25,
+        }
+    ]
