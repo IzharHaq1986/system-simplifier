@@ -108,8 +108,8 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
             content=error_response.model_dump(),
         )
 
-    # Evaluation boundary (non-blocking, deterministic)
-    evaluation_decision = evaluate_response(shaped_response)
+    # Evaluation boundary remains non-blocking in this phase.
+    evaluate_response(shaped_response)
 
     telemetry_event = build_execution_telemetry_event(
         trace_id=trace_id,
