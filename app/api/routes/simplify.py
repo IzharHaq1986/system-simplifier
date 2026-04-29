@@ -14,7 +14,7 @@ from app.response_policy.evaluator import evaluate_response_policy
 from app.telemetry.builder import build_execution_telemetry_event
 from app.telemetry.formatter import format_execution_telemetry_event
 from app.telemetry.sink import emit_execution_telemetry
-
+from app.evaluation.evaluator import evaluate_response
 
 router = APIRouter()
 
@@ -102,10 +102,14 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
             trace_id=trace_id,
         )
 
+        
         return JSONResponse(
             status_code=500,
             content=error_response.model_dump(),
         )
+
+    # Evaluation boundary (non-blocking, deterministic)
+    evaluation_decision = evaluate_response(shaped_response)
 
     telemetry_event = build_execution_telemetry_event(
         trace_id=trace_id,

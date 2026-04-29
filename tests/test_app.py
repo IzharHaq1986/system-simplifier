@@ -328,3 +328,44 @@ def test_simplify_emits_internal_execution_telemetry(monkeypatch):
     assert event.execution_status == "success"
     assert event.text_length == len("Simplify this telemetry boundary.")
     assert event.trace_id == response.headers["X-Trace-ID"]
+
+def test_simplify_calls_evaluation_after_response_policy(monkeypatch):
+    calls = []
+
+    def fake_evaluate_response_policy(response):
+        calls.append("response_policy")
+
+        class Decision:
+            decision = "allow"
+
+        return Decision()
+
+    def fake_evaluate_response(response):
+        calls.append("evaluation")
+
+        class Decision:
+            allowed = True
+            reason = "evaluation_passed"
+
+        return Decision()
+
+    monkeypatch.setattr(
+        "app.api.routes.simplify.evaluate_response_policy",
+        fake_evaluate_response_policy,
+    )
+
+    monkeypatch.setattr(
+        "app.api.routes.simplify.evaluate_response",
+        fake_evaluate_response,
+    )
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Hello world"},
+    )
+
+    assert response.status_code == 200
+    assert calls == [
+        "response_policy",
+        "evaluation",
+    ]
