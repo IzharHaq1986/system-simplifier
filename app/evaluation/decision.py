@@ -1,17 +1,16 @@
-from pydantic import BaseModel, Field
+"""
+Typed evaluation decision model.
+
+Evaluation is internal and non-blocking.
+It describes response correctness signals without controlling API flow.
+"""
+
+from pydantic import BaseModel, ConfigDict
 
 
 class EvaluationDecision(BaseModel):
-    """
-    Internal evaluation decision.
+    model_config = ConfigDict(extra="forbid")
 
-    This model is not exposed through API responses.
-    """
-
-    allowed: bool = Field(
-        description="Whether the response passed deterministic evaluation checks.",
-    )
-
-    reason: str = Field(
-        description="Stable internal reason for the evaluation decision.",
-    )
+    allowed: bool
+    reason: str
+    rule_version: str
