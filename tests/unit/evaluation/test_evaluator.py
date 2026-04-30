@@ -26,3 +26,16 @@ def test_evaluate_response_allows_valid_response_contract():
 
     assert decision.allowed is True
     assert decision.reason == "evaluation_passed"
+
+def test_evaluate_response_denies_unexpected_status() -> None:
+    response = SimplifyResponse(
+        status="failed",
+        text_length=10,
+        trace_id="trace-123",
+    )
+
+    decision = evaluate_response(response)
+
+    assert decision.allowed is False
+    assert decision.reason == "unexpected_response_status"
+    assert decision.rule_version == "v1"
