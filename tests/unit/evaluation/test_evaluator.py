@@ -39,3 +39,16 @@ def test_evaluate_response_denies_unexpected_status() -> None:
     assert decision.allowed is False
     assert decision.reason == "unexpected_response_status"
     assert decision.rule_version == "v1"
+
+def test_evaluate_response_denies_non_positive_text_length() -> None:
+    response = SimplifyResponse(
+        status="success",
+        text_length=0,
+        trace_id="trace-123",
+    )
+
+    decision = evaluate_response(response)
+
+    assert decision.allowed is False
+    assert decision.reason == "invalid_text_length"
+    assert decision.rule_version == "v1"
