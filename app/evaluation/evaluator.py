@@ -6,16 +6,16 @@ It does not call models, tools, external services, telemetry systems,
 or control-flow enforcement code.
 """
 
-from app.evaluation.constants import (
+# Centralized evaluation imports (stable contract)
+from app.evaluation import (
     EVALUATION_REASON_INVALID_TEXT_LENGTH,
     EVALUATION_REASON_MISSING_TRACE_ID,
     EVALUATION_REASON_PASSED,
     EVALUATION_REASON_UNEXPECTED_STATUS,
     EVALUATION_RULE_VERSION,
+    EvaluationDecision,
 )
-from app.evaluation.decision import EvaluationDecision
 from app.models.response import SimplifyResponse
-
 
 def evaluate_response(
     response: SimplifyResponse,

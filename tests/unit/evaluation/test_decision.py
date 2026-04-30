@@ -1,5 +1,5 @@
-from app.evaluation.decision import EvaluationDecision
-
+# Centralized evaluation import (stable contract)
+from app.evaluation import EvaluationDecision
 
 def test_evaluation_decision_accepts_allowed_result() -> None:
     decision = EvaluationDecision(
