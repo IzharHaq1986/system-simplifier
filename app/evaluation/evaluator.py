@@ -19,14 +19,22 @@ def evaluate_response(
     """
     Evaluate a shaped response before telemetry emission.
 
-    Current minimum rule:
-    a response must contain a trace ID.
+    Current rules:
+    - response must contain a trace ID
+    - response status must be "success"
     """
 
     if not response.trace_id:
         return EvaluationDecision(
             allowed=False,
             reason="missing_trace_id",
+            rule_version=EVALUATION_RULE_VERSION,
+        )
+
+    if response.status != "success":
+        return EvaluationDecision(
+            allowed=False,
+            reason="unexpected_response_status",
             rule_version=EVALUATION_RULE_VERSION,
         )
 
