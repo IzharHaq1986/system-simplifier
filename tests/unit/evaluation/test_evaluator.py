@@ -4,6 +4,7 @@ from app.evaluation.evaluator import (
     EVALUATION_REASON_MISSING_TRACE_ID,
     EVALUATION_REASON_PASSED,
     EVALUATION_REASON_UNEXPECTED_STATUS,
+    EVALUATION_RULE_VERSION,
     evaluate_response,
 )
 
@@ -63,3 +64,6 @@ def test_evaluation_reason_constants_match_expected_values() -> None:
     assert EVALUATION_REASON_UNEXPECTED_STATUS == "unexpected_response_status"
     assert EVALUATION_REASON_INVALID_TEXT_LENGTH == "invalid_text_length"
     assert EVALUATION_REASON_PASSED == "evaluation_passed"
+
+def test_evaluation_rule_version_matches_expected_value() -> None:
+    assert EVALUATION_RULE_VERSION == "v1"
