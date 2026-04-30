@@ -6,15 +6,16 @@ It does not call models, tools, external services, telemetry systems,
 or control-flow enforcement code.
 """
 
+from app.evaluation.constants import (
+    EVALUATION_REASON_INVALID_TEXT_LENGTH,
+    EVALUATION_REASON_MISSING_TRACE_ID,
+    EVALUATION_REASON_PASSED,
+    EVALUATION_REASON_UNEXPECTED_STATUS,
+    EVALUATION_RULE_VERSION,
+)
 from app.evaluation.decision import EvaluationDecision
 from app.models.response import SimplifyResponse
 
-
-EVALUATION_RULE_VERSION = "v1"
-EVALUATION_REASON_MISSING_TRACE_ID = "missing_trace_id"
-EVALUATION_REASON_UNEXPECTED_STATUS = "unexpected_response_status"
-EVALUATION_REASON_INVALID_TEXT_LENGTH = "invalid_text_length"
-EVALUATION_REASON_PASSED = "evaluation_passed"
 
 def evaluate_response(
     response: SimplifyResponse,
@@ -25,6 +26,7 @@ def evaluate_response(
     Current rules:
     - response must contain a trace ID
     - response status must be "success"
+    - response text_length must be greater than 0
     """
 
     if not response.trace_id:
