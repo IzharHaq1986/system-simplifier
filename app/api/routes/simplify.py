@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 from app.core.input_guardrails import get_input_rejection_reason
 from app.core.response_shaper import shape_simplify_response
+from app.evaluation import evaluate_response
 from app.execution.decision import build_execution_decision
 from app.execution.result import build_execution_result
 from app.models.error import ErrorResponse
@@ -14,8 +15,6 @@ from app.response_policy.evaluator import evaluate_response_policy
 from app.telemetry.builder import build_execution_telemetry_event
 from app.telemetry.formatter import format_execution_telemetry_event
 from app.telemetry.sink import emit_execution_telemetry
-from app.evaluation.evaluator import evaluate_response
-
 router = APIRouter()
 
 telemetry_sink = build_telemetry_sink()

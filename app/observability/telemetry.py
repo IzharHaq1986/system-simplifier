@@ -7,8 +7,8 @@ It must not affect API responses, policy decisions, or control flow.
 
 from pydantic import BaseModel, ConfigDict
 
-from app.evaluation.decision import EvaluationDecision
-
+# Use evaluation package export (stable contract)
+from app.evaluation import EvaluationDecision
 
 class TelemetryEvent(BaseModel):
     model_config = ConfigDict(extra="forbid")
