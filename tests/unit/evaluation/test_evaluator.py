@@ -1,6 +1,11 @@
-from app.evaluation.evaluator import evaluate_response
 from app.models.response import SimplifyResponse
-
+from app.evaluation.evaluator import (
+    EVALUATION_REASON_INVALID_TEXT_LENGTH,
+    EVALUATION_REASON_MISSING_TRACE_ID,
+    EVALUATION_REASON_PASSED,
+    EVALUATION_REASON_UNEXPECTED_STATUS,
+    evaluate_response,
+)
 
 def test_evaluate_response_allows_response_with_trace_id():
     response = SimplifyResponse(
@@ -52,3 +57,9 @@ def test_evaluate_response_denies_non_positive_text_length() -> None:
     assert decision.allowed is False
     assert decision.reason == "invalid_text_length"
     assert decision.rule_version == "v1"
+
+def test_evaluation_reason_constants_match_expected_values() -> None:
+    assert EVALUATION_REASON_MISSING_TRACE_ID == "missing_trace_id"
+    assert EVALUATION_REASON_UNEXPECTED_STATUS == "unexpected_response_status"
+    assert EVALUATION_REASON_INVALID_TEXT_LENGTH == "invalid_text_length"
+    assert EVALUATION_REASON_PASSED == "evaluation_passed"
