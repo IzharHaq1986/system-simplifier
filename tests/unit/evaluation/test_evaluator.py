@@ -1,12 +1,14 @@
-from app.models.response import SimplifyResponse
-from app.evaluation.evaluator import (
+from app.evaluation.constants import (
     EVALUATION_REASON_INVALID_TEXT_LENGTH,
     EVALUATION_REASON_MISSING_TRACE_ID,
     EVALUATION_REASON_PASSED,
     EVALUATION_REASON_UNEXPECTED_STATUS,
     EVALUATION_RULE_VERSION,
-    evaluate_response,
 )
+from app.evaluation.evaluator import evaluate_response
+from app.models.response import SimplifyResponse
+
+
 
 def test_evaluate_response_allows_response_with_trace_id():
     response = SimplifyResponse(
