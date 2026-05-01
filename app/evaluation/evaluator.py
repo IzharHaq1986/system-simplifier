@@ -17,6 +17,7 @@ from app.evaluation import (
 )
 from app.models.response import SimplifyResponse
 
+
 def evaluate_response(
     response: SimplifyResponse,
 ) -> EvaluationDecision:
