@@ -267,6 +267,12 @@ Define the smallest implementation plan that proves the architecture under norma
 - Regression tests prevent telemetry leakage
 - Route-level test verifies telemetry emission
 
+** Evaluation Route Regression**
+- Added route-level regression coverage for non-blocking evaluation behavior
+- Confirmed evaluation does not change successful API responses
+- Confirmed evaluation fields remain internal and are not exposed through the API contract
+- Confirmed trace ID consistency between response body and response header
+
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
