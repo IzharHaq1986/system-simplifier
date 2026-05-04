@@ -268,12 +268,14 @@ Define the smallest implementation plan that proves the architecture under norma
 - Route-level test verifies telemetry emission
 
 **Evaluation Route Regression**
+
 - Added route-level regression coverage for non-blocking evaluation behavior
 - Confirmed evaluation does not change successful API responses
 - Confirmed evaluation fields remain internal and are not exposed through the API contract
 - Confirmed trace ID consistency between response body and response header
 
 **Execution Adapter Interface**
+
 - Added controlled ExecutionAdapter protocol
 - Added execution package exports
 - Added adapter contract regression test
@@ -281,10 +283,29 @@ Define the smallest implementation plan that proves the architecture under norma
 - No model, tool, network, or external service execution introduced
 
 **No-Op Execution Adapter**
+
 - Added concrete NoOpExecutionAdapter implementation
 - Preserved existing no-op execution result envelope
 - Added regression test for adapter behavior
 - Confirmed no model, tool, network, or external service execution is introduced
+
+**Controlled Execution Integration**
+
+- Added controlled execution adapter selector
+- Routed /v1/simplify through build_execution_adapter()
+- Preserved NoOpExecutionAdapter as active implementation
+- Passed validated payload text and trace_id into adapter
+- No model, tool, network, or external service execution introduced
+- Public API response contract unchanged
+- Route-level regression coverage added
+
+**Execution Adapter Mode Coverage**
+
+- Added explicit EXECUTION_ADAPTER_MODE constant
+- Current adapter mode locked as no_op
+- Exported adapter mode at package level
+- Added CI-enforced test coverage for adapter mode
+- Confirmed controlled execution remains deterministic
 
 #### Repo-Level Enforcement — Completed
 
