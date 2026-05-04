@@ -5,16 +5,24 @@ This module centralizes adapter selection so route code does not need to know
 which concrete adapter is currently active.
 """
 
-from app.execution.no_op_adapter import NoOpExecutionAdapter
 from app.execution.adapter import ExecutionAdapter
+from app.execution.no_op_adapter import NoOpExecutionAdapter
+
+
+# Explicit execution mode for controlled integration.
+# This remains fixed to "no_op" until real execution is introduced.
+EXECUTION_ADAPTER_MODE = "no_op"
 
 
 def build_execution_adapter() -> ExecutionAdapter:
     """
     Build the active execution adapter.
 
-    The system currently allows only the no-op adapter. This keeps execution
-    deterministic and prevents model, tool, or network calls from entering the
-    request path prematurely.
+    Expected flow:
+    - adapter mode remains explicit
+    - selector returns the no-op adapter
+    - execution stays deterministic
+    - no model, tool, network, or external service call is introduced
     """
+
     return NoOpExecutionAdapter()
