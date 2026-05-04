@@ -280,6 +280,12 @@ Define the smallest implementation plan that proves the architecture under norma
 - Preserved no-op execution behavior
 - No model, tool, network, or external service execution introduced
 
+**No-Op Execution Adapter**
+- Added concrete NoOpExecutionAdapter implementation
+- Preserved existing no-op execution result envelope
+- Added regression test for adapter behavior
+- Confirmed no model, tool, network, or external service execution is introduced
+
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
