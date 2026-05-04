@@ -4,8 +4,8 @@ from fastapi.responses import JSONResponse
 from app.core.input_guardrails import get_input_rejection_reason
 from app.core.response_shaper import shape_simplify_response
 from app.evaluation import evaluate_response
+from app.execution import build_execution_adapter
 from app.execution.decision import build_execution_decision
-from app.execution.result import build_execution_result
 from app.models.error import ErrorResponse
 from app.models.request import SimplifyRequest
 from app.models.response import SimplifyResponse
@@ -15,6 +15,7 @@ from app.response_policy.evaluator import evaluate_response_policy
 from app.telemetry.builder import build_execution_telemetry_event
 from app.telemetry.formatter import format_execution_telemetry_event
 from app.telemetry.sink import emit_execution_telemetry
+
 router = APIRouter()
 
 telemetry_sink = build_telemetry_sink()
@@ -42,9 +43,9 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
     """
     Accept a simplify request through explicit validation, guardrail,
     policy, execution-decision, execution-result, response-shaping,
-    response-policy, telemetry, and observability boundaries.
+    response-policy, evaluation, telemetry, and observability boundaries.
 
-    No model or tool execution happens in this route yet.
+    No model, tool, network, or external service execution happens here.
     """
 
     trace_id = request.state.trace_id
@@ -82,7 +83,15 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
         )
 
     execution_decision = build_execution_decision()
-    execution_result = build_execution_result()
+
+    # Execution is routed through the controlled adapter selector.
+    # The active adapter remains NoOpExecutionAdapter, so no model, tool,
+    # network, or external service execution is introduced.
+    execution_adapter = build_execution_adapter()
+    execution_result = execution_adapter.execute(
+        text=payload.text,
+        trace_id=trace_id,
+    )
 
     shaped_response = shape_simplify_response(
         execution_result=execution_result,
@@ -101,7 +110,6 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
             trace_id=trace_id,
         )
 
-        
         return JSONResponse(
             status_code=500,
             content=error_response.model_dump(),
@@ -129,7 +137,6 @@ def simplify(request: Request, payload: SimplifyRequest) -> SimplifyResponse | J
     }
 
     telemetry_sink.emit(api_telemetry)
-
     emit_execution_telemetry(telemetry_event)
 
     return shaped_response
