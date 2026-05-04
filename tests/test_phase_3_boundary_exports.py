@@ -18,6 +18,8 @@ def test_execution_package_exports_only_intentional_boundaries() -> None:
         "ExecutionResult",
         "NoOpExecutionAdapter",
         "build_execution_adapter",
+        "ALLOWED_EXECUTION_MODES",
+        "validate_execution_mode",
     }
 
     assert set(execution.__all__) == expected_exports
