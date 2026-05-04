@@ -58,3 +58,35 @@ def test_simplify_evaluation_remains_non_blocking() -> None:
     assert "evaluation_status" not in body
     assert "evaluation_reason" not in body
     assert "evaluation_rule_version" not in body
+
+def test_simplify_route_preserves_controlled_execution_contract() -> None:
+    """
+    The simplify route must keep execution behind the controlled adapter boundary.
+
+    Expected flow:
+    - request passes validation, guardrails, and policy
+    - route builds the execution decision
+    - route executes through the selected no-op adapter
+    - public response exposes only the stable API contract
+    """
+
+    client = TestClient(app)
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Controlled execution route regression."},
+    )
+
+    assert response.status_code == 200
+
+    body = response.json()
+
+    assert body["status"] == "accepted"
+    assert body["text_length"] == len("Controlled execution route regression.")
+    assert body["trace_id"] == response.headers["x-trace-id"]
+
+    assert "execution_decision" not in body
+    assert "execution_result" not in body
+    assert "evaluation_allowed" not in body
+    assert "evaluation_reason" not in body
+    assert "telemetry" not in body
