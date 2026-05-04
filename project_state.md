@@ -394,6 +394,26 @@ Translate the logical architecture into a clean, minimal repository structure an
 - separate repositories
 - infrastructure-as-code
 
+### Controlled Execution Evolution (In Progress 🚧)
+
+Completed
+
+1. Execution Mode Validation
+- Added fail-closed execution mode validation
+- Defined ALLOWED_EXECUTION_MODES
+- Allowed only no_op mode
+- Rejected unsupported execution modes
+- Wired validation into adapter selector
+- Exported validation boundary at package level
+- Added CI-enforced tests and boundary export audit coverage
+
+Current Phase 4 Properties
+- Execution mode is explicit
+- Adapter selection fails closed
+- no_op remains the only active mode
+- No model/tool/network execution introduced
+- Public API contract remains unchanged
+
 ---
 
 ## Phase 5 — Runtime Reliability and Control Architecture
