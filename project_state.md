@@ -515,6 +515,17 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - Degraded responses must use the public response contract only
 - Degraded outcomes must be observable through internal telemetry
 
+#### Boundary-Safe Failure Handling Definition
+
+- Failures must resolve into an explicit safe outcome
+- Failures must not expose internal policy, evaluation, telemetry, retry, fallback, or adapter details
+- Failures must preserve the same trace_id where available
+- Failures must not enable real execution
+- Failures must not call models, tools, network, or external services
+- Failure outcomes must use public API contracts only
+- Failure outcomes must be observable through internal telemetry
+- Unknown failure states must fail closed
+
 ---
 
 ## Phase 6 — Evaluation, Guardrails, and Observability Expansion
