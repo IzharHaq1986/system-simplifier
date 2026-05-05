@@ -44,3 +44,14 @@ def test_evaluation_package_exports_only_intentional_boundaries() -> None:
     }
 
     assert set(evaluation.__all__) == expected_exports
+
+def test_stub_adapter_is_not_exported_from_execution_package() -> None:
+    """
+    Expected flow:
+    - Stub adapter may exist as an internal placeholder.
+    - Execution package exports remain intentional and limited.
+    - Stub adapter is not available through public package imports.
+    """
+    import app.execution as execution
+
+    assert not hasattr(execution, "StubExecutionAdapter")
