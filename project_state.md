@@ -420,6 +420,7 @@ Completed
 - Selector safety test added to prove stub adapter is not selector-reachable
 - Execution feature gate added and disabled by default
 - Feature gate default behavior covered by test
+-
 
 Current Phase 4 Properties
 - Execution mode is explicit
