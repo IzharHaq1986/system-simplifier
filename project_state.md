@@ -411,6 +411,7 @@ Completed
 - Adapter selector contract tests added
 - Stub execution adapter scaffold added as internal-only placeholder
 - Stub adapter is not exported or selector-wired
+- Selector safety test added to prove stub adapter is not selector-reachable
 
 Current Phase 4 Properties
 - Execution mode is explicit
@@ -420,6 +421,7 @@ Current Phase 4 Properties
 - Public API contract remains unchanged
 - Adapter contract has a single source of truth
 - Stub adapter exists only as unreachable scaffold
+- Stub adapter is internal, not exported, and not selector-reachable
 
 ---
 
