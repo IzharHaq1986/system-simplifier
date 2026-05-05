@@ -134,7 +134,7 @@ Define the target logical architecture of the system using a small number of reu
 
 ---
 
-## Phase 3 — Minimum Build Plan (In Progress 🚧)
+## Phase 3 — Minimum Build Plan — Completed
 
 ### Objective
 Define the smallest implementation plan that proves the architecture under normal and failure conditions without overbuilding the system.
@@ -268,12 +268,14 @@ Define the smallest implementation plan that proves the architecture under norma
 - Route-level test verifies telemetry emission
 
 **Evaluation Route Regression**
+
 - Added route-level regression coverage for non-blocking evaluation behavior
 - Confirmed evaluation does not change successful API responses
 - Confirmed evaluation fields remain internal and are not exposed through the API contract
 - Confirmed trace ID consistency between response body and response header
 
 **Execution Adapter Interface**
+
 - Added controlled ExecutionAdapter protocol
 - Added execution package exports
 - Added adapter contract regression test
@@ -281,11 +283,36 @@ Define the smallest implementation plan that proves the architecture under norma
 - No model, tool, network, or external service execution introduced
 
 **No-Op Execution Adapter**
+<<<<<<< docs/update-project-state-after-no-op-adapter
+=======
+
+>>>>>>> main
 - Added concrete NoOpExecutionAdapter implementation
 - Preserved existing no-op execution result envelope
 - Added regression test for adapter behavior
 - Confirmed no model, tool, network, or external service execution is introduced
 
+<<<<<<< docs/update-project-state-after-no-op-adapter
+=======
+**Controlled Execution Integration**
+
+- Added controlled execution adapter selector
+- Routed /v1/simplify through build_execution_adapter()
+- Preserved NoOpExecutionAdapter as active implementation
+- Passed validated payload text and trace_id into adapter
+- No model, tool, network, or external service execution introduced
+- Public API response contract unchanged
+- Route-level regression coverage added
+
+**Execution Adapter Mode Coverage**
+
+- Added explicit EXECUTION_ADAPTER_MODE constant
+- Current adapter mode locked as no_op
+- Exported adapter mode at package level
+- Added CI-enforced test coverage for adapter mode
+- Confirmed controlled execution remains deterministic
+
+>>>>>>> main
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
@@ -372,6 +399,38 @@ Translate the logical architecture into a clean, minimal repository structure an
 - distributed service layout
 - separate repositories
 - infrastructure-as-code
+
+### Controlled Execution Evolution (In Progress 🚧)
+
+Completed
+
+1. Execution Mode Validation
+- Added fail-closed execution mode validation
+- Defined ALLOWED_EXECUTION_MODES
+- Allowed only no_op mode
+- Rejected unsupported execution modes
+- Wired validation into adapter selector
+- Exported validation boundary at package level
+- Added CI-enforced tests and boundary export audit coverage
+- Explicit execution adapter protocol introduced
+- No-op adapter aligned with shared execution contract
+- Adapter selector contract tests added
+- Stub execution adapter scaffold added as internal-only placeholder
+- Stub adapter is not exported or selector-wired
+- Selector safety test added to prove stub adapter is not selector-reachable
+- Execution feature gate added and disabled by default
+- Feature gate default behavior covered by test
+
+Current Phase 4 Properties
+- Execution mode is explicit
+- Adapter selection fails closed
+- no_op remains the only active mode
+- No model/tool/network execution introduced
+- Public API contract remains unchanged
+- Adapter contract has a single source of truth
+- Stub adapter exists only as unreachable scaffold
+- Stub adapter is internal, not exported, and not selector-reachable
+- Non-no-op execution remains feature-gated and disabled
 
 ---
 
