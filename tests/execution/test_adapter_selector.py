@@ -32,3 +32,15 @@ def test_build_execution_adapter_returns_adapter_contract() -> None:
     )
 
     assert result.status == "success"
+
+
+def test_build_execution_adapter_does_not_return_stub_adapter() -> None:
+    """
+    Expected flow:
+    - Adapter selector uses only the approved execution mode.
+    - Stub adapter remains internal and unreachable.
+    - Selector continues returning the controlled no-op adapter only.
+    """
+    adapter = build_execution_adapter()
+
+    assert adapter.__class__.__name__ != "StubExecutionAdapter"
