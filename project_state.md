@@ -406,6 +406,11 @@ Completed
 - Wired validation into adapter selector
 - Exported validation boundary at package level
 - Added CI-enforced tests and boundary export audit coverage
+- Explicit execution adapter protocol introduced
+- No-op adapter aligned with shared execution contract
+- Adapter selector contract tests added
+- Stub execution adapter scaffold added as internal-only placeholder
+- Stub adapter is not exported or selector-wired
 
 Current Phase 4 Properties
 - Execution mode is explicit
@@ -413,6 +418,8 @@ Current Phase 4 Properties
 - no_op remains the only active mode
 - No model/tool/network execution introduced
 - Public API contract remains unchanged
+- Adapter contract has a single source of truth
+- Stub adapter exists only as unreachable scaffold
 
 ---
 
