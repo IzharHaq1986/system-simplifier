@@ -526,6 +526,16 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - Failure outcomes must be observable through internal telemetry
 - Unknown failure states must fail closed
 
+#### Request Traceability Baseline
+
+- Every request must have one trace_id
+- The same trace_id must flow through validation, guardrails, policy, execution, response shaping, evaluation, telemetry, and observability
+- Retry, fallback, degraded response, and failure outcomes must preserve the same trace_id where available
+- Internal telemetry must include trace_id for correlation
+- Public API responses must expose only contract-approved trace fields
+- Traceability must not expose internal policy, evaluation, telemetry, adapter, retry, or fallback details
+- Missing or invalid trace_id states must fail closed at the appropriate boundary
+
 ---
 
 ## Phase 6 — Evaluation, Guardrails, and Observability Expansion
