@@ -21,6 +21,7 @@ def test_execution_package_exports_only_intentional_boundaries() -> None:
         "ALLOWED_EXECUTION_MODES",
         "validate_execution_mode",
         "build_execution_result",
+        "ENABLE_NON_NO_OP_EXECUTION",
     }
 
     assert set(execution.__all__) == expected_exports
