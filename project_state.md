@@ -283,12 +283,17 @@ Define the smallest implementation plan that proves the architecture under norma
 - No model, tool, network, or external service execution introduced
 
 **No-Op Execution Adapter**
+<<<<<<< docs/update-project-state-after-no-op-adapter
+=======
 
+>>>>>>> main
 - Added concrete NoOpExecutionAdapter implementation
 - Preserved existing no-op execution result envelope
 - Added regression test for adapter behavior
 - Confirmed no model, tool, network, or external service execution is introduced
 
+<<<<<<< docs/update-project-state-after-no-op-adapter
+=======
 **Controlled Execution Integration**
 
 - Added controlled execution adapter selector
@@ -307,6 +312,7 @@ Define the smallest implementation plan that proves the architecture under norma
 - Added CI-enforced test coverage for adapter mode
 - Confirmed controlled execution remains deterministic
 
+>>>>>>> main
 #### Repo-Level Enforcement — Completed
 
 * Pre-flight checklist added:
