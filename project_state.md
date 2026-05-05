@@ -505,6 +505,16 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - Fallback must produce either a controlled degraded response or a safe failure
 - Fallback must not leak internal policy, evaluation, telemetry, or adapter details
 
+#### Degraded Response Policy Definition
+
+- Degraded responses must be explicit and controlled
+- Degraded responses must preserve the same trace_id
+- Degraded responses must not expose internal policy, evaluation, telemetry, adapter, or retry details
+- Degraded responses must not enable real execution
+- Degraded responses must not call models, tools, network, or external services
+- Degraded responses must use the public response contract only
+- Degraded outcomes must be observable through internal telemetry
+
 ---
 
 ## Phase 6 — Evaluation, Guardrails, and Observability Expansion
