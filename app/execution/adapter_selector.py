@@ -5,7 +5,7 @@ This module centralizes adapter selection so route code does not need to know
 which concrete adapter is currently active.
 """
 
-from app.execution.adapter import ExecutionAdapter
+from app.execution.adapter_protocol import ExecutionAdapter
 from app.execution.mode import validate_execution_mode
 from app.execution.no_op_adapter import NoOpExecutionAdapter
 
