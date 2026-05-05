@@ -536,6 +536,16 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - Traceability must not expose internal policy, evaluation, telemetry, adapter, retry, or fallback details
 - Missing or invalid trace_id states must fail closed at the appropriate boundary
 
+#### Logging/Event Expectations
+
+- Runtime outcomes must emit internal events
+- Events must include trace_id where available
+- Events must identify outcome category: success, retry, fallback, degraded_response, or failure
+- Events must not expose request secrets, internal policy details, evaluation internals, adapter internals, or raw exception data
+- Events must remain observation-only and must not change runtime behavior
+- Logging must support debugging without leaking internals through the public API
+- Missing event emission must not change the API response contract
+
 ---
 
 ## Phase 6 — Evaluation, Guardrails, and Observability Expansion
