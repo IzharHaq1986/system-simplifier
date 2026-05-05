@@ -407,7 +407,8 @@ Completed
 - Selector safety test added to prove stub adapter is not selector-reachable
 - Execution feature gate added and disabled by default
 - Feature gate default behavior covered by test
--
+- Execution adapter selector behavior locked by test
+- Selector verified to build only NoOpExecutionAdapter
 
 Current Phase 4 Properties
 - Execution mode is explicit
