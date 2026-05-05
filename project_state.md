@@ -495,6 +495,16 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - Retry outcomes must be observable through internal telemetry
 - Failed retries must resolve into controlled fallback or degraded response behavior
 
+#### Fallback Policy Definition
+
+- Fallbacks must be explicit and bounded
+- Fallbacks must not enable real execution
+- Fallbacks must not call models, tools, network, or external services
+- Fallback behavior must preserve the same trace_id
+- Fallback outcomes must be observable through internal telemetry
+- Fallback must produce either a controlled degraded response or a safe failure
+- Fallback must not leak internal policy, evaluation, telemetry, or adapter details
+
 ---
 
 ## Phase 6 — Evaluation, Guardrails, and Observability Expansion
