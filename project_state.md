@@ -412,6 +412,8 @@ Completed
 - Stub execution adapter scaffold added as internal-only placeholder
 - Stub adapter is not exported or selector-wired
 - Selector safety test added to prove stub adapter is not selector-reachable
+- Execution feature gate added and disabled by default
+- Feature gate default behavior covered by test
 
 Current Phase 4 Properties
 - Execution mode is explicit
@@ -422,6 +424,7 @@ Current Phase 4 Properties
 - Adapter contract has a single source of truth
 - Stub adapter exists only as unreachable scaffold
 - Stub adapter is internal, not exported, and not selector-reachable
+- Non-no-op execution remains feature-gated and disabled
 
 ---
 
