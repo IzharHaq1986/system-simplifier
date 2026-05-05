@@ -438,9 +438,11 @@ Current Phase 4 Properties
 ## Phase 5 — Runtime Reliability and Control Architecture
 
 ### Objective
+
 Define the operational behavior of the runtime system under normal, degraded, and failing conditions.
 
 ### Scope
+
 - define retry policy
 - define fallback policy
 - define degraded-response policy
@@ -448,6 +450,7 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - define minimum runtime observability behavior
 
 ### Key Outputs
+
 - retry rules
 - fallback rules
 - degraded-response rules
@@ -456,16 +459,31 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - logging/event expectations
 
 ### Exit Criteria
+
 - failure behavior is explicit
 - degraded modes are controlled
 - retries and fallbacks are bounded
 - architecture can be validated under stress without ambiguity
 
 ### Out of Scope
+
 - full incident runbooks
 - advanced alerting
 - autoscaling behavior
 - full SRE platform design
+
+#### Execution Control Alignment (Phase 4 → Phase 5 Bridge)
+
+- Execution remains no-op by default
+- Execution feature gate must remain disabled
+- All runtime reliability policies must operate without enabling real execution
+- Retry, fallback, and degraded-response policies must not introduce side effects
+- Any future execution mode must pass through:
+  - feature gate
+  - adapter selector (fail-closed)
+  - policy boundary
+  - evaluation (non-blocking)
+  - telemetry (internal-only)
 
 ---
 
