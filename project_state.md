@@ -485,6 +485,16 @@ Define the operational behavior of the runtime system under normal, degraded, an
   - evaluation (non-blocking)
   - telemetry (internal-only)
 
+#### Retry Policy Definition
+
+- Retries must be bounded
+- Retries must never enable real execution
+- Retries must not call models, tools, network, or external services
+- Retry behavior applies only to explicitly safe internal boundaries
+- Retry attempts must preserve the same trace_id
+- Retry outcomes must be observable through internal telemetry
+- Failed retries must resolve into controlled fallback or degraded response behavior
+
 ---
 
 ## Phase 6 — Evaluation, Guardrails, and Observability Expansion
