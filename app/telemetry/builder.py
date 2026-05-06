@@ -1,6 +1,8 @@
 from app.execution.decision import ExecutionDecision
 from app.execution.result import ExecutionResult
+from app.runtime.policy import RuntimeOutcome
 from app.telemetry.events import ExecutionTelemetryEvent
+
 
 def build_execution_telemetry_event(
     trace_id: str,
@@ -8,12 +10,11 @@ def build_execution_telemetry_event(
     result: ExecutionResult,
     text_length: int,
 ) -> ExecutionTelemetryEvent:
-
     """
     Build internal execution telemetry from execution boundary outputs.
 
-    This event is internal-only and must never be returned
-    from the public API response.
+    Runtime outcome categorization is internal-only and must never be
+    returned from the public API response.
     """
 
     return ExecutionTelemetryEvent(
@@ -21,5 +22,6 @@ def build_execution_telemetry_event(
         stage="execution",
         decision_allowed=(decision.decision == "proceed"),
         execution_status=result.status,
+        runtime_outcome=RuntimeOutcome.SUCCESS,
         text_length=text_length,
     )

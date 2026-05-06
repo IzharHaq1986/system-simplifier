@@ -17,5 +17,6 @@ def format_execution_telemetry_event(
         "stage": event.stage,
         "decision_allowed": event.decision_allowed,
         "execution_status": event.execution_status,
+        "runtime_outcome": event.runtime_outcome,
         "text_length": event.text_length,
     }
