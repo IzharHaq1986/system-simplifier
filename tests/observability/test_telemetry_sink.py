@@ -47,3 +47,20 @@ def test_telemetry_sink_does_not_mutate_telemetry():
     sink.emit(telemetry)
 
     assert telemetry == original_telemetry
+
+def test_telemetry_sink_preserves_runtime_outcome():
+    hook = RecordingHook()
+    sink = TelemetrySink(hook=hook)
+
+    telemetry = {
+        "event_type": "simplify.execution",
+        "trace_id": "test-trace-id",
+        "status": "success",
+        "runtime_outcome": "success",
+        "text_length": 42,
+    }
+
+    sink.emit(telemetry)
+
+    assert hook.emitted_telemetry == [telemetry]
+    assert hook.emitted_telemetry[0]["runtime_outcome"] == "success"
