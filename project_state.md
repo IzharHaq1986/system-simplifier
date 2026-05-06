@@ -465,6 +465,10 @@ Completed:
 - Observability runtime_outcome preservation tests
 - Observability pass-through validation
 - Telemetry mutation protection validation
+- Runtime observability consolidation completed
+- Unused observability telemetry model removed
+- Duplicate telemetry boundary reduced
+- Active runtime telemetry flow preserved
 
 ### Scope
 
@@ -536,12 +540,12 @@ Completed:
 
 #### Next Recommended Focus
 
-Begin runtime observability consolidation:
-- reduce duplicate telemetry/observability boundaries where safe
-- preserve deterministic telemetry flow
-- maintain strict internal-only runtime telemetry
-- preserve fail-closed runtime guarantees
-- avoid introducing side effects or external dependencies
+Begin runtime telemetry contract hardening:
+- tighten telemetry schema consistency
+- preserve deterministic telemetry formatting
+- maintain internal-only telemetry guarantees
+- validate fail-closed telemetry handling
+- avoid introducing external observability dependencies
 
 ---
 
