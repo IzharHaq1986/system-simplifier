@@ -57,6 +57,14 @@ def evaluate_runtime_policy(
             trace_id=trace_id,
         )
 
+    if outcome == RuntimeOutcome.DEGRADED_RESPONSE:
+        return RuntimePolicyDecision(
+            allowed=True,
+            outcome=RuntimeOutcome.DEGRADED_RESPONSE,
+            reason="controlled degraded response allowed",
+            trace_id=trace_id,
+        )
+
     return RuntimePolicyDecision(
         allowed=False,
         outcome=RuntimeOutcome.FAILURE,
