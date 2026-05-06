@@ -47,3 +47,20 @@ def test_observability_hook_does_not_mutate_telemetry():
     hook.emit(telemetry)
 
     assert telemetry == original_telemetry
+
+def test_observability_hook_preserves_runtime_outcome():
+    adapter = RecordingAdapter()
+    hook = ObservabilityHook(adapter=adapter)
+
+    telemetry = {
+        "event_type": "simplify.execution",
+        "trace_id": "test-trace-id",
+        "status": "success",
+        "runtime_outcome": "success",
+        "text_length": 42,
+    }
+
+    hook.emit(telemetry)
+
+    assert adapter.emitted_telemetry == [telemetry]
+    assert adapter.emitted_telemetry[0]["runtime_outcome"] == "success"
