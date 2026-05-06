@@ -461,6 +461,10 @@ Completed:
 - Telemetry sink runtime_outcome support
 - Runtime telemetry categorization tests
 - CI and architecture boundary validation
+- Runtime observability consistency validation
+- Observability runtime_outcome preservation tests
+- Observability pass-through validation
+- Telemetry mutation protection validation
 
 ### Scope
 
@@ -532,11 +536,12 @@ Completed:
 
 #### Next Recommended Focus
 
-Begin runtime observability consistency:
-- verify runtime_outcome reaches observability formatting
-- keep observability side-effect free
-- preserve API response contract
-- add focused tests only where needed
+Begin runtime observability consolidation:
+- reduce duplicate telemetry/observability boundaries where safe
+- preserve deterministic telemetry flow
+- maintain strict internal-only runtime telemetry
+- preserve fail-closed runtime guarantees
+- avoid introducing side effects or external dependencies
 
 ---
 
