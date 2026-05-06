@@ -435,19 +435,41 @@ Current Phase 4 Properties
 
 ---
 
-## Phase 5 — Runtime Reliability and Control Architecture (Definition Complete ✅)
+## Phase 5 — Runtime Reliability and Control Architecture (In Progress)
 
 ### Objective
 
-Define the operational behavior of the runtime system under normal, degraded, and failing conditions.
+Define and implement the operational behavior of the runtime system under normal, degraded, and failing conditions.
+
+### Current Status
+
+Runtime telemetry categorization is completed.
+
+Completed:
+- RuntimeOutcome model
+- RuntimePolicyDecision model
+- Runtime evaluator
+- Retry-safe runtime handling
+- Bounded retry enforcement
+- Controlled fallback handling
+- Controlled degraded-response handling
+- Fail-closed runtime behavior
+- Runtime trace_id enforcement
+- Runtime telemetry outcome field
+- Telemetry builder runtime_outcome support
+- Telemetry formatter runtime_outcome support
+- Telemetry sink runtime_outcome support
+- Runtime telemetry categorization tests
+- CI and architecture boundary validation
 
 ### Scope
 
-- define retry policy
-- define fallback policy
-- define degraded-response policy
-- define boundary-safe failure handling
-- define minimum runtime observability behavior
+- retry policy
+- fallback policy
+- degraded-response policy
+- boundary-safe failure handling
+- runtime telemetry categorization
+- runtime observability consistency
 
 ### Key Outputs
 
@@ -456,13 +478,19 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - degraded-response rules
 - boundary-safe failure handling model
 - request traceability baseline
+- runtime_outcome telemetry categorization
 - logging/event expectations
+- observability consistency checks
 
 ### Exit Criteria
 
 - failure behavior is explicit
 - degraded modes are controlled
 - retries and fallbacks are bounded
+- runtime outcomes are categorized internally
+- runtime_outcome reaches telemetry formatting
+- observability remains side-effect free
+- public API response contract remains unchanged
 - architecture can be validated under stress without ambiguity
 
 ### Out of Scope
@@ -471,80 +499,44 @@ Define the operational behavior of the runtime system under normal, degraded, an
 - advanced alerting
 - autoscaling behavior
 - full SRE platform design
+- external telemetry vendors
 
-#### Execution Control Alignment (Phase 4 → Phase 5 Bridge)
+#### Execution Control Alignment
 
 - Execution remains no-op by default
 - Execution feature gate must remain disabled
-- All runtime reliability policies must operate without enabling real execution
+- Runtime reliability policies must operate without enabling real execution
 - Retry, fallback, and degraded-response policies must not introduce side effects
 - Any future execution mode must pass through:
   - feature gate
-  - adapter selector (fail-closed)
+  - adapter selector
   - policy boundary
-  - evaluation (non-blocking)
-  - telemetry (internal-only)
+  - evaluation
+  - telemetry
 
-#### Retry Policy Definition
+#### Runtime Telemetry Categorization
 
-- Retries must be bounded
-- Retries must never enable real execution
-- Retries must not call models, tools, network, or external services
-- Retry behavior applies only to explicitly safe internal boundaries
-- Retry attempts must preserve the same trace_id
-- Retry outcomes must be observable through internal telemetry
-- Failed retries must resolve into controlled fallback or degraded response behavior
+- Runtime outcomes are categorized internally through runtime_outcome
+- Supported runtime outcomes:
+  - success
+  - retry
+  - fallback
+  - degraded_response
+  - failure
+- runtime_outcome is included in ExecutionTelemetryEvent
+- runtime_outcome is emitted by telemetry formatting
+- runtime_outcome remains internal-only
+- runtime_outcome must not appear in public API responses
+- telemetry must not change runtime behavior
+- telemetry must remain deterministic
 
-#### Fallback Policy Definition
+#### Next Recommended Focus
 
-- Fallbacks must be explicit and bounded
-- Fallbacks must not enable real execution
-- Fallbacks must not call models, tools, network, or external services
-- Fallback behavior must preserve the same trace_id
-- Fallback outcomes must be observable through internal telemetry
-- Fallback must produce either a controlled degraded response or a safe failure
-- Fallback must not leak internal policy, evaluation, telemetry, or adapter details
-
-#### Degraded Response Policy Definition
-
-- Degraded responses must be explicit and controlled
-- Degraded responses must preserve the same trace_id
-- Degraded responses must not expose internal policy, evaluation, telemetry, adapter, or retry details
-- Degraded responses must not enable real execution
-- Degraded responses must not call models, tools, network, or external services
-- Degraded responses must use the public response contract only
-- Degraded outcomes must be observable through internal telemetry
-
-#### Boundary-Safe Failure Handling Definition
-
-- Failures must resolve into an explicit safe outcome
-- Failures must not expose internal policy, evaluation, telemetry, retry, fallback, or adapter details
-- Failures must preserve the same trace_id where available
-- Failures must not enable real execution
-- Failures must not call models, tools, network, or external services
-- Failure outcomes must use public API contracts only
-- Failure outcomes must be observable through internal telemetry
-- Unknown failure states must fail closed
-
-#### Request Traceability Baseline
-
-- Every request must have one trace_id
-- The same trace_id must flow through validation, guardrails, policy, execution, response shaping, evaluation, telemetry, and observability
-- Retry, fallback, degraded response, and failure outcomes must preserve the same trace_id where available
-- Internal telemetry must include trace_id for correlation
-- Public API responses must expose only contract-approved trace fields
-- Traceability must not expose internal policy, evaluation, telemetry, adapter, retry, or fallback details
-- Missing or invalid trace_id states must fail closed at the appropriate boundary
-
-#### Logging/Event Expectations
-
-- Runtime outcomes must emit internal events
-- Events must include trace_id where available
-- Events must identify outcome category: success, retry, fallback, degraded_response, or failure
-- Events must not expose request secrets, internal policy details, evaluation internals, adapter internals, or raw exception data
-- Events must remain observation-only and must not change runtime behavior
-- Logging must support debugging without leaking internals through the public API
-- Missing event emission must not change the API response contract
+Begin runtime observability consistency:
+- verify runtime_outcome reaches observability formatting
+- keep observability side-effect free
+- preserve API response contract
+- add focused tests only where needed
 
 ---
 
