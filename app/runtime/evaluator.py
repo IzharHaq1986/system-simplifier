@@ -11,12 +11,10 @@ def evaluate_runtime_policy(
     retry_attempts: int = 0,
 ) -> RuntimePolicyDecision:
     """
-    Evaluates runtime behavior without enabling real execution.
+    Evaluate runtime behavior without enabling real execution.
 
-    Retries are allowed only when:
-    - outcome is explicitly retry
-    - trace_id exists
-    - retry_attempts stay within the bounded limit
+    Runtime policy decisions are internal-only and must not call models,
+    tools, networks, or external services.
     """
 
     if not trace_id.strip():
@@ -48,6 +46,14 @@ def evaluate_runtime_policy(
             allowed=True,
             outcome=RuntimeOutcome.RETRY,
             reason="bounded retry allowed",
+            trace_id=trace_id,
+        )
+
+    if outcome == RuntimeOutcome.FALLBACK:
+        return RuntimePolicyDecision(
+            allowed=True,
+            outcome=RuntimeOutcome.FALLBACK,
+            reason="controlled fallback allowed",
             trace_id=trace_id,
         )
 
