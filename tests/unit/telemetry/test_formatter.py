@@ -1,3 +1,4 @@
+from app.runtime.policy import RuntimeOutcome
 from app.telemetry.events import ExecutionTelemetryEvent
 from app.telemetry.formatter import format_execution_telemetry_event
 
@@ -8,6 +9,7 @@ def test_format_execution_telemetry_event_returns_internal_dictionary():
         stage="execution",
         decision_allowed=True,
         execution_status="success",
+        runtime_outcome=RuntimeOutcome.SUCCESS,
         text_length=25,
     )
 
@@ -18,8 +20,10 @@ def test_format_execution_telemetry_event_returns_internal_dictionary():
         "stage": "execution",
         "decision_allowed": True,
         "execution_status": "success",
+        "runtime_outcome": RuntimeOutcome.SUCCESS,
         "text_length": 25,
     }
+
 
 def test_format_execution_telemetry_event_excludes_unapproved_fields():
     event = ExecutionTelemetryEvent(
@@ -27,6 +31,7 @@ def test_format_execution_telemetry_event_excludes_unapproved_fields():
         stage="execution",
         decision_allowed=True,
         execution_status="success",
+        runtime_outcome=RuntimeOutcome.SUCCESS,
         text_length=25,
     )
 
@@ -37,6 +42,7 @@ def test_format_execution_telemetry_event_excludes_unapproved_fields():
         "stage",
         "decision_allowed",
         "execution_status",
+        "runtime_outcome",
         "text_length",
     }
 

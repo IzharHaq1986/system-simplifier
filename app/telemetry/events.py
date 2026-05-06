@@ -1,3 +1,5 @@
+from app.runtime.policy import RuntimeOutcome
+
 from pydantic import BaseModel, Field
 
 
@@ -13,4 +15,5 @@ class ExecutionTelemetryEvent(BaseModel):
     stage: str = Field(min_length=1)
     decision_allowed: bool
     execution_status: str = Field(min_length=1)
+    runtime_outcome: RuntimeOutcome
     text_length: int = Field(ge=0)
