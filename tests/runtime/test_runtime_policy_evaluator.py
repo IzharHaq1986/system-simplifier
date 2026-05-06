@@ -58,3 +58,25 @@ def test_fallback_fails_closed_without_trace_id() -> None:
     assert decision.allowed is False
     assert decision.outcome == RuntimeOutcome.FAILURE
     assert decision.reason == "missing trace_id"
+
+def test_degraded_response_is_allowed_when_outcome_is_explicit() -> None:
+    decision = evaluate_runtime_policy(
+        outcome=RuntimeOutcome.DEGRADED_RESPONSE,
+        trace_id="trace-123",
+    )
+
+    assert decision.allowed is True
+    assert decision.outcome == RuntimeOutcome.DEGRADED_RESPONSE
+    assert decision.reason == "controlled degraded response allowed"
+    assert decision.trace_id == "trace-123"
+
+
+def test_degraded_response_fails_closed_without_trace_id() -> None:
+    decision = evaluate_runtime_policy(
+        outcome=RuntimeOutcome.DEGRADED_RESPONSE,
+        trace_id="",
+    )
+
+    assert decision.allowed is False
+    assert decision.outcome == RuntimeOutcome.FAILURE
+    assert decision.reason == "missing trace_id"
