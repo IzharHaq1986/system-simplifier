@@ -86,3 +86,31 @@ def test_runtime_policy_decision_fields_do_not_leak_into_public_response():
     assert "decision_allowed" not in payload
     assert "execution_status" not in payload
     assert "stage" not in payload
+
+def test_evaluation_decision_fields_do_not_leak_into_public_response():
+    """
+    Validates that internal evaluation decision metadata remains hidden
+    from the public API response during the simplify request lifecycle.
+    """
+
+    client = TestClient(app)
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Validate evaluation decision boundary isolation."},
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert payload["status"] == "accepted"
+    assert payload["text_length"] == 48
+    assert payload["trace_id"]
+
+    assert "evaluation" not in payload
+    assert "evaluation_allowed" not in payload
+    assert "evaluation_reason" not in payload
+    assert "evaluation_status" not in payload
+    assert "rule_version" not in payload
+    assert "warnings" not in payload
