@@ -469,6 +469,11 @@ Completed:
 - Unused observability telemetry model removed
 - Duplicate telemetry boundary reduced
 - Active runtime telemetry flow preserved
+- Runtime telemetry contract hardening completed
+- ExecutionTelemetryEvent validation tests added
+- Fail-closed telemetry payload validation enforced
+- Invalid telemetry payload rejection validated
+- Telemetry schema consistency strengthened
 
 ### Scope
 
@@ -540,12 +545,12 @@ Completed:
 
 #### Next Recommended Focus
 
-Begin runtime telemetry contract hardening:
-- tighten telemetry schema consistency
-- preserve deterministic telemetry formatting
-- maintain internal-only telemetry guarantees
-- validate fail-closed telemetry handling
-- avoid introducing external observability dependencies
+Begin runtime telemetry boundary stabilization:
+- reduce remaining telemetry contract ambiguity
+- preserve deterministic runtime telemetry flow
+- maintain strict internal-only telemetry guarantees
+- validate boundary-safe telemetry handling
+- avoid external observability dependencies or side effects
 
 ---
 
