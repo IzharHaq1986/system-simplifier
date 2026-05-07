@@ -114,3 +114,30 @@ def test_evaluation_decision_fields_do_not_leak_into_public_response():
     assert "evaluation_status" not in payload
     assert "rule_version" not in payload
     assert "warnings" not in payload
+
+def test_public_simplify_response_only_contains_allowed_fields():
+    """
+    Validates the public API response allowlist so internal runtime,
+    telemetry, policy, and evaluation fields cannot leak accidentally.
+    """
+
+    client = TestClient(app)
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Validate public response allowlist."},
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert set(payload) == {
+        "status",
+        "text_length",
+        "trace_id",
+    }
+
+    assert payload["status"] == "accepted"
+    assert payload["text_length"] == 35
+    assert payload["trace_id"]
