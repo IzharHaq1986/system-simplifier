@@ -474,6 +474,13 @@ Completed:
 - Fail-closed telemetry payload validation enforced
 - Invalid telemetry payload rejection validated
 - Telemetry schema consistency strengthened
+- Runtime telemetry lifecycle consistency completed
+- All RuntimeOutcome formatter paths validated
+- Retry telemetry formatting validated
+- Fallback telemetry formatting validated
+- Degraded-response telemetry formatting validated
+- Failure telemetry formatting validated
+- Deterministic telemetry formatting consistency validated
 
 ### Scope
 
@@ -545,12 +552,12 @@ Completed:
 
 #### Next Recommended Focus
 
-Begin runtime telemetry boundary stabilization:
-- reduce remaining telemetry contract ambiguity
-- preserve deterministic runtime telemetry flow
+Begin runtime telemetry boundary enforcement:
+- validate telemetry boundary isolation
+- preserve deterministic telemetry flow
 - maintain strict internal-only telemetry guarantees
-- validate boundary-safe telemetry handling
-- avoid external observability dependencies or side effects
+- verify telemetry does not alter runtime control flow
+- avoid external dependencies or side effects
 
 ---
 
