@@ -191,3 +191,30 @@ def test_public_trace_id_boundary_exposes_only_single_trace_id():
     assert "trace_metadata" not in payload
     assert "runtime_trace_id" not in payload
     assert "internal_trace_id" not in payload
+
+def test_retry_runtime_outcome_remains_internal():
+    """
+    Validates that retry-related runtime metadata remains internal-only
+    and never expands the public API response contract.
+    """
+
+    client = TestClient(app)
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Validate retry telemetry isolation."},
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert payload["status"] == "accepted"
+    assert payload["text_length"] == 35
+    assert payload["trace_id"]
+
+    assert "runtime_outcome" not in payload
+    assert "retry_count" not in payload
+    assert "retry_metadata" not in payload
+    assert "retry_attempt" not in payload
+    assert "retry_reason" not in payload
