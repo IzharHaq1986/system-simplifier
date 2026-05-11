@@ -218,3 +218,30 @@ def test_retry_runtime_outcome_remains_internal():
     assert "retry_metadata" not in payload
     assert "retry_attempt" not in payload
     assert "retry_reason" not in payload
+
+def test_fallback_runtime_outcome_remains_internal():
+    """
+    Validates that fallback-related runtime metadata remains internal-only
+    and never expands the public API response contract.
+    """
+
+    client = TestClient(app)
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Validate fallback telemetry isolation."},
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert payload["status"] == "accepted"
+    assert payload["text_length"] == 38
+    assert payload["trace_id"]
+
+    assert "runtime_outcome" not in payload
+    assert "fallback_used" not in payload
+    assert "fallback_reason" not in payload
+    assert "fallback_metadata" not in payload
+    assert "fallback_attempt" not in payload
