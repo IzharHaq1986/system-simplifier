@@ -29,6 +29,7 @@ def test_runtime_telemetry_remains_internal_during_simplify_request():
     assert "decision_allowed" not in payload
     assert "stage" not in payload
 
+
 def test_runtime_response_does_not_expose_failure_or_retry_metadata():
     """
     Validates that runtime failure, retry, and fallback metadata remain
@@ -57,6 +58,7 @@ def test_runtime_response_does_not_expose_failure_or_retry_metadata():
     assert "failure_reason" not in payload
     assert "retry_count" not in payload
     assert "fallback_used" not in payload
+
 
 def test_runtime_policy_decision_fields_do_not_leak_into_public_response():
     """
@@ -87,6 +89,7 @@ def test_runtime_policy_decision_fields_do_not_leak_into_public_response():
     assert "execution_status" not in payload
     assert "stage" not in payload
 
+
 def test_evaluation_decision_fields_do_not_leak_into_public_response():
     """
     Validates that internal evaluation decision metadata remains hidden
@@ -115,6 +118,7 @@ def test_evaluation_decision_fields_do_not_leak_into_public_response():
     assert "rule_version" not in payload
     assert "warnings" not in payload
 
+
 def test_public_simplify_response_only_contains_allowed_fields():
     """
     Validates the public API response allowlist so internal runtime,
@@ -141,3 +145,30 @@ def test_public_simplify_response_only_contains_allowed_fields():
     assert payload["status"] == "accepted"
     assert payload["text_length"] == 35
     assert payload["trace_id"]
+
+
+def test_public_response_exposes_only_single_trace_id_field():
+    """
+    Validates that the public API exposes one stable trace_id field
+    without leaking duplicate or internal trace metadata.
+    """
+
+    client = TestClient(app)
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Validate trace id boundary consistency."},
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert payload["trace_id"]
+    assert list(payload).count("trace_id") == 1
+
+    assert "trace" not in payload
+    assert "traceId" not in payload
+    assert "request_id" not in payload
+    assert "correlation_id" not in payload
+    assert "internal_trace_id" not in payload
