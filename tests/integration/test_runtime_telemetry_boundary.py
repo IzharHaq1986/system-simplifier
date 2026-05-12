@@ -245,3 +245,30 @@ def test_fallback_runtime_outcome_remains_internal():
     assert "fallback_reason" not in payload
     assert "fallback_metadata" not in payload
     assert "fallback_attempt" not in payload
+
+def test_runtime_outcome_transition_fields_remain_internal():
+    """
+    Validates that runtime outcome transition metadata remains internal-only
+    and does not expand the public API response contract.
+    """
+
+    client = TestClient(app)
+
+    response = client.post(
+        "/v1/simplify",
+        json={"text": "Validate runtime outcome transition isolation."},
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+
+    assert payload["status"] == "accepted"
+    assert payload["text_length"] == 46
+    assert payload["trace_id"]
+
+    assert "runtime_outcome" not in payload
+    assert "previous_runtime_outcome" not in payload
+    assert "next_runtime_outcome" not in payload
+    assert "outcome_transition" not in payload
+    assert "transition_reason" not in payload
