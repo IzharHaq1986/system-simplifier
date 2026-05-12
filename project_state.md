@@ -435,7 +435,7 @@ Current Phase 4 Properties
 
 ---
 
-## Phase 5 — Runtime Reliability and Control Architecture (Completed)
+## Phase 5 — Runtime Reliability and Control Architecture (Completed ✅)
 
 ### Objective
 
@@ -567,7 +567,7 @@ Begin runtime telemetry boundary enforcement:
 - verify telemetry does not alter runtime control flow
 - avoid external dependencies or side effects
 
-#### Current Status (Completed)
+#### Current Phase 5 Status (Completed ✅)
 
 ---
 
@@ -582,6 +582,14 @@ Expand the three critical system quality areas identified at project start: eval
 - define guardrail maturity path
 - define observability maturity path
 - define what signals must exist before system expansion
+
+### Recommended Implementation Sequence
+
+1. evaluation framework definition
+2. lightweight scoring model
+3. explicit guardrail maturity mapping
+4. observability signal classification
+5. confidence-building operational signals
 
 ### Key Outputs
 - evaluation framework plan
