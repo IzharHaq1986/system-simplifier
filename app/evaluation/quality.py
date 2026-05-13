@@ -1,6 +1,6 @@
 from enum import StrEnum
 from pydantic import BaseModel, Field
-
+from app.evaluation.decision import EvaluationDecision
 
 class QualitySignalStatus(StrEnum):
     """
@@ -43,4 +43,27 @@ def build_quality_signal(
         status=status,
         source=source,
         reason=reason,
+    )
+
+def build_quality_signal_from_evaluation(
+    *,
+    decision: EvaluationDecision,
+    source: str = "evaluation",
+) -> QualitySignal:
+    """
+    Convert an internal evaluation decision into an internal quality signal.
+
+    This helper is deterministic and side-effect free.
+    It does not mutate runtime behavior, telemetry, or public API responses.
+    """
+
+    if decision.allowed:
+        status = QualitySignalStatus.ACCEPTABLE
+    else:
+        status = QualitySignalStatus.BLOCKED
+
+    return build_quality_signal(
+        status=status,
+        source=source,
+        reason=decision.reason,
     )
