@@ -8,6 +8,7 @@ from app.evaluation.quality import (
     QualitySignalStatus,
     build_quality_signal,
     build_quality_signal_from_evaluation,
+    build_quality_signal_payload,
 )
 
 def test_quality_signal_accepts_valid_internal_signal():
@@ -111,3 +112,17 @@ def test_quality_signal_from_evaluation_blocks_denied_decision():
 
     assert signal.status == QualitySignalStatus.BLOCKED
     assert signal.source == "evaluation"
+
+def test_quality_signal_payload_contains_internal_quality_fields():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+    )
+
+    payload = build_quality_signal_payload(signal=signal)
+
+    assert payload == {
+        "quality_status": "acceptable",
+        "quality_source": "evaluation",
+    }

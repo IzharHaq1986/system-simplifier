@@ -67,3 +67,16 @@ def build_quality_signal_from_evaluation(
         source=source,
         reason=decision.reason,
     )
+
+def build_quality_signal_payload(
+    *,
+    signal: QualitySignal,
+) -> dict[str, str]:
+    """
+    Builds an internal-only quality payload for future telemetry preparation.
+    """
+
+    return {
+        "quality_status": signal.status.value,
+        "quality_source": signal.source,
+    }
