@@ -6,6 +6,11 @@ from app.evaluation import (
     EVALUATION_RULE_VERSION,
     EvaluationDecision,
     evaluate_response,
+    QualitySignal,
+    QualitySignalStatus,
+    build_quality_signal,
+    build_quality_signal_from_evaluation,
+    build_quality_signal_payload,
 )
 
 
@@ -17,3 +22,8 @@ def test_evaluation_package_exports_stable_contracts() -> None:
     assert EVALUATION_REASON_PASSED == "evaluation_passed"
     assert EvaluationDecision is not None
     assert evaluate_response is not None
+    assert QualitySignal is not None
+    assert QualitySignalStatus is not None
+    assert build_quality_signal is not None
+    assert build_quality_signal_from_evaluation is not None
+    assert build_quality_signal_payload is not None

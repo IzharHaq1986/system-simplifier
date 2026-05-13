@@ -22,7 +22,7 @@ def test_execution_package_exports_only_intentional_boundaries() -> None:
         "validate_execution_mode",
         "build_execution_result",
         "ENABLE_NON_NO_OP_EXECUTION",
-    }
+ }
 
     assert set(execution.__all__) == expected_exports
 
@@ -41,6 +41,11 @@ def test_evaluation_package_exports_only_intentional_boundaries() -> None:
         "EVALUATION_REASON_UNEXPECTED_STATUS",
         "EVALUATION_RULE_VERSION",
         "EvaluationDecision",
+        "QualitySignal",
+        "QualitySignalStatus",
+        "build_quality_signal",
+        "build_quality_signal_from_evaluation",
+        "build_quality_signal_payload",
         "evaluate_response",
     }
 
