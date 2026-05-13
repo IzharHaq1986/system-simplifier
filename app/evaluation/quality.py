@@ -25,3 +25,22 @@ class QualitySignal(BaseModel):
     status: QualitySignalStatus
     source: str = Field(min_length=1)
     reason: str = Field(min_length=1)
+
+def build_quality_signal(
+    *,
+    status: QualitySignalStatus,
+    source: str,
+    reason: str,
+) -> QualitySignal:
+    """
+    Build an internal-only quality signal.
+
+    This helper keeps signal creation consistent while preserving
+    deterministic, side-effect free behavior.
+    """
+
+    return QualitySignal(
+        status=status,
+        source=source,
+        reason=reason,
+    )
