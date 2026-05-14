@@ -47,7 +47,8 @@ def test_evaluation_package_exports_only_intentional_boundaries() -> None:
         "build_quality_signal_from_evaluation",
         "build_quality_signal_payload",
         "evaluate_response",
-    }
+        "format_quality_signal",
+ }
 
     assert set(evaluation.__all__) == expected_exports
 
