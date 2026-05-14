@@ -9,6 +9,7 @@ from app.evaluation.quality import (
     build_quality_signal,
     build_quality_signal_from_evaluation,
     build_quality_signal_payload,
+    format_quality_signal,
 )
 
 def test_quality_signal_accepts_valid_internal_signal():
@@ -126,3 +127,18 @@ def test_quality_signal_payload_contains_internal_quality_fields():
         "quality_status": "acceptable",
         "quality_source": "evaluation",
     }
+
+def test_format_quality_signal_returns_deterministic_text():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+    )
+
+    formatted = format_quality_signal(signal=signal)
+
+    assert formatted == (
+        "quality_status=acceptable "
+        "quality_source=evaluation "
+        "quality_reason=evaluation passed"
+    )

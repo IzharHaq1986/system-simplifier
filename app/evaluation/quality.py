@@ -80,3 +80,17 @@ def build_quality_signal_payload(
         "quality_status": signal.status.value,
         "quality_source": signal.source,
     }
+
+def format_quality_signal(
+    *,
+    signal: QualitySignal,
+) -> str:
+    """
+    Formats an internal quality signal as deterministic text.
+    """
+
+    return (
+        f"quality_status={signal.status.value} "
+        f"quality_source={signal.source} "
+        f"quality_reason={signal.reason}"
+    )
