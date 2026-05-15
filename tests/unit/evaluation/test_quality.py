@@ -10,6 +10,7 @@ from app.evaluation.quality import (
     build_quality_signal_from_evaluation,
     build_quality_signal_payload,
     format_quality_signal,
+    summarize_quality_signal,
 )
 
 def test_quality_signal_accepts_valid_internal_signal():
@@ -142,3 +143,18 @@ def test_format_quality_signal_returns_deterministic_text():
         "quality_source=evaluation "
         "quality_reason=evaluation passed"
     )
+
+def test_summarize_quality_signal_returns_deterministic_payload():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.NEEDS_REVIEW,
+        source="evaluation",
+        reason="length warning",
+    )
+
+    summary = summarize_quality_signal(signal=signal)
+
+    assert summary == {
+        "status": "needs_review",
+        "source": "evaluation",
+        "reason": "length warning",
+    }
