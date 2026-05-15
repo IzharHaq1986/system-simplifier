@@ -94,3 +94,17 @@ def format_quality_signal(
         f"quality_source={signal.source} "
         f"quality_reason={signal.reason}"
     )
+
+def summarize_quality_signal(
+    *,
+    signal: QualitySignal,
+) -> dict[str, str]:
+    """
+    Builds a deterministic internal summary for a quality signal.
+    """
+
+    return {
+        "status": signal.status.value,
+        "source": signal.source,
+        "reason": signal.reason,
+    }
