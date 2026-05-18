@@ -118,3 +118,13 @@ def is_blocked_quality_signal(
     """
 
     return signal.status == QualitySignalStatus.BLOCKED
+
+def is_needs_review_quality_signal(
+    *,
+    signal: QualitySignal,
+) -> bool:
+    """
+    Checks whether an internal quality signal needs review.
+    """
+
+    return signal.status == QualitySignalStatus.NEEDS_REVIEW
