@@ -108,3 +108,13 @@ def summarize_quality_signal(
         "source": signal.source,
         "reason": signal.reason,
     }
+
+def is_blocked_quality_signal(
+    *,
+    signal: QualitySignal,
+) -> bool:
+    """
+    Checks whether an internal quality signal is blocked.
+    """
+
+    return signal.status == QualitySignalStatus.BLOCKED
