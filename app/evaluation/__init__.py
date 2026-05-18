@@ -20,6 +20,7 @@ from app.evaluation.quality import (
     build_quality_signal_from_evaluation,
     build_quality_signal_payload,
     format_quality_signal,
+    is_blocked_quality_signal,
     summarize_quality_signal,
 )
 
@@ -38,4 +39,5 @@ __all__ = [
     "build_quality_signal_payload",
     "format_quality_signal",
     "summarize_quality_signal",
+    "is_blocked_quality_signal",
 ]
