@@ -13,6 +13,7 @@ from app.evaluation.quality import (
     summarize_quality_signal,
     is_blocked_quality_signal,
     is_needs_review_quality_signal,
+    is_acceptable_quality_signal,
 )
 
 def test_quality_signal_accepts_valid_internal_signal():
@@ -198,3 +199,22 @@ def test_is_needs_review_quality_signal_returns_false_for_non_review_signal():
     )
 
     assert is_needs_review_quality_signal(signal=signal) is False
+
+def test_is_acceptable_quality_signal_returns_true_for_acceptable_signal():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+    )
+
+    assert is_acceptable_quality_signal(signal=signal) is True
+
+
+def test_is_acceptable_quality_signal_returns_false_for_non_acceptable_signal():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.BLOCKED,
+        source="evaluation",
+        reason="policy denied",
+    )
+
+    assert is_acceptable_quality_signal(signal=signal) is False

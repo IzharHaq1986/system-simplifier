@@ -128,3 +128,13 @@ def is_needs_review_quality_signal(
     """
 
     return signal.status == QualitySignalStatus.NEEDS_REVIEW
+
+def is_acceptable_quality_signal(
+    *,
+    signal: QualitySignal,
+) -> bool:
+    """
+    Checks whether an internal quality signal is acceptable.
+    """
+
+    return signal.status == QualitySignalStatus.ACCEPTABLE
