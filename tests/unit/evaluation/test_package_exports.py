@@ -11,6 +11,7 @@ from app.evaluation import (
     build_quality_signal,
     build_quality_signal_from_evaluation,
     build_quality_signal_payload,
+    summarize_quality_signal,
     format_quality_signal,
 )
 
@@ -29,3 +30,4 @@ def test_evaluation_package_exports_stable_contracts() -> None:
     assert build_quality_signal_from_evaluation is not None
     assert build_quality_signal_payload is not None
     assert format_quality_signal is not None
+    assert summarize_quality_signal is not None
