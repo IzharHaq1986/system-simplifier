@@ -11,6 +11,7 @@ from app.evaluation.quality import (
     build_quality_signal_payload,
     format_quality_signal,
     summarize_quality_signal,
+    is_blocked_quality_signal,
 )
 
 def test_quality_signal_accepts_valid_internal_signal():
@@ -158,3 +159,22 @@ def test_summarize_quality_signal_returns_deterministic_payload():
         "source": "evaluation",
         "reason": "length warning",
     }
+
+def test_is_blocked_quality_signal_returns_true_for_blocked_signal():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.BLOCKED,
+        source="evaluation",
+        reason="policy denied",
+    )
+
+    assert is_blocked_quality_signal(signal=signal) is True
+
+
+def test_is_blocked_quality_signal_returns_false_for_non_blocked_signal():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+    )
+
+    assert is_blocked_quality_signal(signal=signal) is False
