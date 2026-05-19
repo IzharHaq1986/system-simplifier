@@ -16,6 +16,7 @@ from app.evaluation import (
     is_blocked_quality_signal,
     is_needs_review_quality_signal,
     serialize_quality_signal,
+    normalize_quality_signal_text,
 )
 
 
@@ -37,3 +38,4 @@ def test_evaluation_package_exports_stable_contracts() -> None:
     assert is_blocked_quality_signal is not None
     assert is_needs_review_quality_signal is not None
     assert serialize_quality_signal is not None
+    assert normalize_quality_signal_text is not None

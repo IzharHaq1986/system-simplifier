@@ -24,6 +24,7 @@ from app.evaluation.quality import (
     summarize_quality_signal,
     is_needs_review_quality_signal,
     serialize_quality_signal,
+    normalize_quality_signal_text,
 )
 
 __all__ = [
@@ -44,4 +45,5 @@ __all__ = [
     "is_blocked_quality_signal",
     "is_needs_review_quality_signal",
     "serialize_quality_signal",
+    "normalize_quality_signal_text",
 ]
