@@ -183,3 +183,17 @@ def serialize_quality_signal(
         "reason": signal.reason,
         "score": signal.score,
     }
+
+def quality_signals_match(
+    *,
+    left: QualitySignal,
+    right: QualitySignal,
+) -> bool:
+    """
+    Compare two internal quality signals for deterministic equality.
+
+    This helper avoids ad-hoc comparison logic in future telemetry,
+    validation, or quality visibility workflows.
+    """
+
+    return serialize_quality_signal(left) == serialize_quality_signal(right)

@@ -16,6 +16,7 @@ from app.evaluation.quality import (
     serialize_quality_signal,
     summarize_quality_signal,
     normalize_quality_signal_text,
+    quality_signals_match,
 )
 
 
@@ -263,3 +264,36 @@ def test_build_quality_signal_normalizes_internal_text_fields():
 
     assert signal.source == "evaluation"
     assert signal.reason == "evaluation passed"
+
+def test_quality_signals_match_returns_true_for_matching_signals():
+    left = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+        score=100,
+    )
+    right = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+        score=100,
+    )
+
+    assert quality_signals_match(left=left, right=right) is True
+
+
+def test_quality_signals_match_returns_false_for_different_signals():
+    left = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+        score=100,
+    )
+    right = build_quality_signal(
+        status=QualitySignalStatus.BLOCKED,
+        source="evaluation",
+        reason="policy denied",
+        score=0,
+    )
+
+    assert quality_signals_match(left=left, right=right) is False
