@@ -52,6 +52,7 @@ def test_evaluation_package_exports_only_intentional_boundaries() -> None:
         "is_blocked_quality_signal",
         "is_needs_review_quality_signal",
         "serialize_quality_signal",
+        "normalize_quality_signal_text",
  }
 
     assert set(evaluation.__all__) == expected_exports

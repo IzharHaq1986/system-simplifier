@@ -15,6 +15,7 @@ from app.evaluation.quality import (
     is_needs_review_quality_signal,
     serialize_quality_signal,
     summarize_quality_signal,
+    normalize_quality_signal_text,
 )
 
 
@@ -244,3 +245,21 @@ def test_serialize_quality_signal_returns_deterministic_payload():
         "reason": "quality signal is acceptable",
         "score": 100,
     }
+
+def test_normalize_quality_signal_text_collapses_extra_whitespace():
+    normalized = normalize_quality_signal_text(
+        "  evaluation   passed   deterministic   checks  "
+    )
+
+    assert normalized == "evaluation passed deterministic checks"
+
+
+def test_build_quality_signal_normalizes_internal_text_fields():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="  evaluation  ",
+        reason="  evaluation   passed  ",
+    )
+
+    assert signal.source == "evaluation"
+    assert signal.reason == "evaluation passed"

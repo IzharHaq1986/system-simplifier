@@ -30,6 +30,16 @@ class QualitySignal(BaseModel):
     reason: str = Field(min_length=1)
     score: int = Field(default=100, ge=0)
 
+def normalize_quality_signal_text(value: str) -> str:
+    """
+    Normalize internal quality signal text.
+
+    This keeps internal quality fields deterministic without adding
+    runtime side effects or external dependencies.
+    """
+
+    return " ".join(value.split())
+
 
 def build_quality_signal(
     *,
@@ -47,8 +57,8 @@ def build_quality_signal(
 
     return QualitySignal(
         status=status,
-        source=source,
-        reason=reason,
+        source=normalize_quality_signal_text(source),
+        reason=normalize_quality_signal_text(reason),
         score=score,
     )
 

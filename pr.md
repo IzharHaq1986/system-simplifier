@@ -1,21 +1,21 @@
 ## Summary
 
-Adds deterministic internal serialization for quality signals.
+Adds deterministic normalization for internal quality signal text fields.
 
 ## Problem Statement
 
-Quality signals had builders, formatters, summaries, and status helpers, but no single trusted helper for converting a signal into a stable internal dictionary.
+Quality signal source and reason fields could be valid but inconsistently formatted because of extra whitespace. That can create noise in future telemetry, serialization, and comparison work.
 
 ## Motivation
 
-A dedicated serializer prevents ad-hoc internal payload construction later and keeps quality visibility deterministic, explicit, and internal-only.
+A small normalization helper keeps internal quality signal text stable before it is formatted, summarized, serialized, or reviewed.
 
 ## Implementation
 
-- Added `score` to `QualitySignal` with deterministic validation.
-- Added `serialize_quality_signal`.
-- Exported the serializer through `app.evaluation`.
-- Added serialization test coverage.
+- Added `normalize_quality_signal_text`.
+- Updated `build_quality_signal` to normalize source and reason.
+- Exported the helper through `app.evaluation`.
+- Added deterministic normalization test coverage.
 - Updated package and boundary export enforcement tests.
 
 ## Validation
@@ -23,11 +23,6 @@ A dedicated serializer prevents ad-hoc internal payload construction later and k
 ```text
 ruff check .
 pytest -q
-
-All checks passed!
-132 passed
-```
-
 ## Pre-Flight Check
 
 - [x] Public API response unchanged.
