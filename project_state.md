@@ -574,14 +574,17 @@ Begin runtime telemetry boundary enforcement:
 ## Phase 6 — Evaluation, Guardrails, and Observability Expansion
 
 ### Objective
+
 Expand the three critical system quality areas identified at project start: evaluation, guardrails, and observability.
 
 ### Scope
+
 - define evaluation approach
 - define lightweight quality measurement
 - define guardrail maturity path
 - define observability maturity path
 - define what signals must exist before system expansion
+- add deterministic internal quality signal helpers
 
 ### Recommended Implementation Sequence
 
@@ -590,25 +593,83 @@ Expand the three critical system quality areas identified at project start: eval
 3. explicit guardrail maturity mapping
 4. observability signal classification
 5. confidence-building operational signals
+6. internal quality signal model
+7. quality signal formatting and summarization
+8. quality signal serialization and normalization
+9. quality signal comparison and priority ordering
+10. quality signal sorting and highest-priority selection
 
 ### Key Outputs
+
 - evaluation framework plan
 - basic scoring and review approach
 - guardrail expansion path
 - observability maturity plan
 - quality visibility goals
+- internal quality signal model
+- deterministic quality helper functions
+- package export boundary coverage
+- public API stability preserved
+
+### Completed Implementation Slices
+
+1. Internal-only quality signal model
+2. Deterministic quality signal builder
+3. Internal quality payload preparation
+4. Deterministic quality signal formatting
+5. Deterministic quality signal summaries
+6. Blocked quality signal helper
+7. Needs-review quality signal helper
+8. Acceptable quality signal helper
+9. Quality signal serialization helper
+10. Quality signal normalization helper
+11. Quality signal comparison helper
+12. Quality signal priority helper
+13. Quality signal sorting helper
+14. Highest-priority quality signal helper
+
+### Current Stable Internal Quality Helpers
+
+- build_quality_signal
+- build_quality_signal_from_evaluation
+- build_quality_signal_payload
+- format_quality_signal
+- summarize_quality_signal
+- is_blocked_quality_signal
+- is_needs_review_quality_signal
+- is_acceptable_quality_signal
+- serialize_quality_signal
+- normalize_quality_signal_text
+- quality_signals_match
+- get_quality_signal_priority
+- sort_quality_signals_by_priority
+- get_highest_priority_quality_signal
+
+### Current Recommended Next Slice
+
+Potential next controlled Phase 6 slices:
+
+- quality signal telemetry integration planning
+- quality signal observability formatting plan
+- final Phase 6 completion summary
 
 ### Exit Criteria
+
 - quality is measurable at a basic level
 - guardrails are no longer implicit
 - observability extends beyond minimal logs
 - system is ready for deeper confidence-building work
+- internal quality signals are deterministic and package-exported
+- public API stability remains enforced
 
 ### Out of Scope
+
 - full benchmark program
 - complex dashboards
 - advanced policy engines
 - large-scale quality automation
+- model-based evaluation
+- external quality services
 
 ---
 
