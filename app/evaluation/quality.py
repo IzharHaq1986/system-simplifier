@@ -1,6 +1,9 @@
 from enum import StrEnum
+
 from pydantic import BaseModel, Field
+
 from app.evaluation.decision import EvaluationDecision
+
 
 class QualitySignalStatus(StrEnum):
     """
@@ -25,12 +28,15 @@ class QualitySignal(BaseModel):
     status: QualitySignalStatus
     source: str = Field(min_length=1)
     reason: str = Field(min_length=1)
+    score: int = Field(default=100, ge=0)
+
 
 def build_quality_signal(
     *,
     status: QualitySignalStatus,
     source: str,
     reason: str,
+    score: int = 100,
 ) -> QualitySignal:
     """
     Build an internal-only quality signal.
@@ -43,7 +49,9 @@ def build_quality_signal(
         status=status,
         source=source,
         reason=reason,
+        score=score,
     )
+
 
 def build_quality_signal_from_evaluation(
     *,
@@ -59,21 +67,25 @@ def build_quality_signal_from_evaluation(
 
     if decision.allowed:
         status = QualitySignalStatus.ACCEPTABLE
+        score = 100
     else:
         status = QualitySignalStatus.BLOCKED
+        score = 0
 
     return build_quality_signal(
         status=status,
         source=source,
         reason=decision.reason,
+        score=score,
     )
+
 
 def build_quality_signal_payload(
     *,
     signal: QualitySignal,
 ) -> dict[str, str]:
     """
-    Builds an internal-only quality payload for future telemetry preparation.
+    Build an internal-only quality payload for future telemetry preparation.
     """
 
     return {
@@ -81,12 +93,13 @@ def build_quality_signal_payload(
         "quality_source": signal.source,
     }
 
+
 def format_quality_signal(
     *,
     signal: QualitySignal,
 ) -> str:
     """
-    Formats an internal quality signal as deterministic text.
+    Format an internal quality signal as deterministic text.
     """
 
     return (
@@ -95,12 +108,13 @@ def format_quality_signal(
         f"quality_reason={signal.reason}"
     )
 
+
 def summarize_quality_signal(
     *,
     signal: QualitySignal,
 ) -> dict[str, str]:
     """
-    Builds a deterministic internal summary for a quality signal.
+    Build a deterministic internal summary for a quality signal.
     """
 
     return {
@@ -109,32 +123,53 @@ def summarize_quality_signal(
         "reason": signal.reason,
     }
 
+
 def is_blocked_quality_signal(
     *,
     signal: QualitySignal,
 ) -> bool:
     """
-    Checks whether an internal quality signal is blocked.
+    Check whether an internal quality signal is blocked.
     """
 
     return signal.status == QualitySignalStatus.BLOCKED
+
 
 def is_needs_review_quality_signal(
     *,
     signal: QualitySignal,
 ) -> bool:
     """
-    Checks whether an internal quality signal needs review.
+    Check whether an internal quality signal needs review.
     """
 
     return signal.status == QualitySignalStatus.NEEDS_REVIEW
+
 
 def is_acceptable_quality_signal(
     *,
     signal: QualitySignal,
 ) -> bool:
     """
-    Checks whether an internal quality signal is acceptable.
+    Check whether an internal quality signal is acceptable.
     """
 
     return signal.status == QualitySignalStatus.ACCEPTABLE
+
+
+def serialize_quality_signal(
+    signal: QualitySignal,
+) -> dict[str, str | int]:
+    """
+    Convert an internal quality signal into a deterministic dictionary.
+
+    This helper preserves internal-only visibility while keeping
+    serialization explicit, stable, and side-effect free.
+    """
+
+    return {
+        "status": signal.status.value,
+        "source": signal.source,
+        "reason": signal.reason,
+        "score": signal.score,
+    }

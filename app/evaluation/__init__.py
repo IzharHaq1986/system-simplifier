@@ -23,6 +23,7 @@ from app.evaluation.quality import (
     is_blocked_quality_signal,
     summarize_quality_signal,
     is_needs_review_quality_signal,
+    serialize_quality_signal,
 )
 
 __all__ = [
@@ -42,4 +43,5 @@ __all__ = [
     "summarize_quality_signal",
     "is_blocked_quality_signal",
     "is_needs_review_quality_signal",
+    "serialize_quality_signal",
 ]
