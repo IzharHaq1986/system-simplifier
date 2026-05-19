@@ -1,21 +1,22 @@
 ## Summary
 
-Adds deterministic normalization for internal quality signal text fields.
+Adds deterministic selection for the highest-priority internal quality signal.
 
 ## Problem Statement
 
-Quality signal source and reason fields could be valid but inconsistently formatted because of extra whitespace. That can create noise in future telemetry, serialization, and comparison work.
+Quality signals can now be prioritized and sorted, but there is no single trusted helper for selecting the most urgent signal from a collection.
 
 ## Motivation
 
-A small normalization helper keeps internal quality signal text stable before it is formatted, summarized, serialized, or reviewed.
+A dedicated selector prevents duplicate ad-hoc logic and prepares quality signals for future telemetry, observability, and reporting summaries.
 
 ## Implementation
 
-- Added `normalize_quality_signal_text`.
-- Updated `build_quality_signal` to normalize source and reason.
+- Added `get_highest_priority_quality_signal`.
+- Reused `sort_quality_signals_by_priority`.
+- Returned `None` for empty input to keep behavior explicit and deterministic.
 - Exported the helper through `app.evaluation`.
-- Added deterministic normalization test coverage.
+- Added deterministic selector test coverage.
 - Updated package and boundary export enforcement tests.
 
 ## Validation
@@ -23,6 +24,7 @@ A small normalization helper keeps internal quality signal text stable before it
 ```text
 ruff check .
 pytest -q
+
 ## Pre-Flight Check
 
 - [x] Public API response unchanged.

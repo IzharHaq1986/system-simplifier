@@ -18,6 +18,7 @@ from app.evaluation.quality import (
     normalize_quality_signal_text,
     quality_signals_match,
     get_quality_signal_priority,
+    get_highest_priority_quality_signal,
 )
 
 
@@ -327,3 +328,33 @@ def test_get_quality_signal_priority_returns_two_for_blocked_signal():
     )
 
     assert get_quality_signal_priority(signal=signal) == 2
+
+def test_get_highest_priority_quality_signal_returns_most_urgent_signal():
+    acceptable = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+    )
+    blocked = build_quality_signal(
+        status=QualitySignalStatus.BLOCKED,
+        source="evaluation",
+        reason="policy denied",
+        score=0,
+    )
+    needs_review = build_quality_signal(
+        status=QualitySignalStatus.NEEDS_REVIEW,
+        source="evaluation",
+        reason="manual review needed",
+    )
+
+    highest_priority = get_highest_priority_quality_signal(
+        signals=[acceptable, blocked, needs_review],
+    )
+
+    assert highest_priority == blocked
+
+
+def test_get_highest_priority_quality_signal_returns_none_for_empty_list():
+    highest_priority = get_highest_priority_quality_signal(signals=[])
+
+    assert highest_priority is None
