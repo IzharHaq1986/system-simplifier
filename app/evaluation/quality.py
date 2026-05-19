@@ -197,3 +197,21 @@ def quality_signals_match(
     """
 
     return serialize_quality_signal(left) == serialize_quality_signal(right)
+
+def get_quality_signal_priority(
+    *,
+    signal: QualitySignal,
+) -> int:
+    """
+    Return the deterministic priority for an internal quality signal.
+
+    Higher values represent higher review urgency.
+    """
+
+    priorities = {
+        QualitySignalStatus.ACCEPTABLE: 0,
+        QualitySignalStatus.NEEDS_REVIEW: 1,
+        QualitySignalStatus.BLOCKED: 2,
+    }
+
+    return priorities[signal.status]

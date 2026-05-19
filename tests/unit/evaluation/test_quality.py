@@ -17,6 +17,7 @@ from app.evaluation.quality import (
     summarize_quality_signal,
     normalize_quality_signal_text,
     quality_signals_match,
+    get_quality_signal_priority,
 )
 
 
@@ -297,3 +298,32 @@ def test_quality_signals_match_returns_false_for_different_signals():
     )
 
     assert quality_signals_match(left=left, right=right) is False
+
+def test_get_quality_signal_priority_returns_zero_for_acceptable_signal():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.ACCEPTABLE,
+        source="evaluation",
+        reason="evaluation passed",
+    )
+
+    assert get_quality_signal_priority(signal=signal) == 0
+
+
+def test_get_quality_signal_priority_returns_one_for_review_signal():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.NEEDS_REVIEW,
+        source="evaluation",
+        reason="manual review needed",
+    )
+
+    assert get_quality_signal_priority(signal=signal) == 1
+
+
+def test_get_quality_signal_priority_returns_two_for_blocked_signal():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.BLOCKED,
+        source="evaluation",
+        reason="policy denied",
+    )
+
+    assert get_quality_signal_priority(signal=signal) == 2
