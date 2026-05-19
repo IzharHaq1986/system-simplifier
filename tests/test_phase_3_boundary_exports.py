@@ -54,6 +54,7 @@ def test_evaluation_package_exports_only_intentional_boundaries() -> None:
         "serialize_quality_signal",
         "normalize_quality_signal_text",
         "quality_signals_match",
+        "get_quality_signal_priority",
 }
 
     assert set(evaluation.__all__) == expected_exports

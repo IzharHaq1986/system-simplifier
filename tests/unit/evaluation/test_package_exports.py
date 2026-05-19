@@ -18,6 +18,7 @@ from app.evaluation import (
     serialize_quality_signal,
     normalize_quality_signal_text,
     quality_signals_match,
+    get_quality_signal_priority,
 )
 
 
@@ -41,3 +42,4 @@ def test_evaluation_package_exports_stable_contracts() -> None:
     assert serialize_quality_signal is not None
     assert normalize_quality_signal_text is not None
     assert quality_signals_match is not None
+    assert get_quality_signal_priority is not None
