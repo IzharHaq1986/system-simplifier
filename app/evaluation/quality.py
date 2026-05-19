@@ -215,3 +215,38 @@ def get_quality_signal_priority(
     }
 
     return priorities[signal.status]
+
+def sort_quality_signals_by_priority(
+    *,
+    signals: list[QualitySignal],
+) -> list[QualitySignal]:
+    """
+    Sort internal quality signals by deterministic review priority.
+
+    Higher-priority signals appear first.
+    The original input list is not mutated.
+    """
+
+    return sorted(
+        signals,
+        key=lambda signal: get_quality_signal_priority(signal=signal),
+        reverse=True,
+    )
+
+def get_highest_priority_quality_signal(
+    *,
+    signals: list[QualitySignal],
+) -> QualitySignal | None:
+    """
+    Return the highest-priority internal quality signal from a list.
+
+    Empty input returns None instead of raising, keeping future callers
+    deterministic and easy to reason about.
+    """
+
+    sorted_signals = sort_quality_signals_by_priority(signals=signals)
+
+    if not sorted_signals:
+        return None
+
+    return sorted_signals[0]

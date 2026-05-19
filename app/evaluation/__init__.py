@@ -27,6 +27,7 @@ from app.evaluation.quality import (
     normalize_quality_signal_text,
     quality_signals_match,
     get_quality_signal_priority,
+    get_highest_priority_quality_signal,
 )
 
 __all__ = [
@@ -50,4 +51,5 @@ __all__ = [
     "normalize_quality_signal_text",
     "quality_signals_match",
     "get_quality_signal_priority",
+    "get_highest_priority_quality_signal",
 ]
