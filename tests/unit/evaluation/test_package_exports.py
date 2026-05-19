@@ -19,7 +19,8 @@ from app.evaluation import (
     normalize_quality_signal_text,
     quality_signals_match,
     get_quality_signal_priority,
-    get_highest_priority_quality_signal
+    get_highest_priority_quality_signal,
+    sort_quality_signals_by_priority,
 )
 
 
@@ -45,3 +46,4 @@ def test_evaluation_package_exports_stable_contracts() -> None:
     assert quality_signals_match is not None
     assert get_quality_signal_priority is not None
     assert get_highest_priority_quality_signal is not None
+    assert sort_quality_signals_by_priority is not None
