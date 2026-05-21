@@ -1,28 +1,28 @@
 ## Summary
 
-Updates project state tracking for completed Phase 6 quality signal helper slices.
+Adds a Phase 6 quality signal telemetry integration plan.
 
 ## Problem Statement
 
-The repository implementation had advanced beyond the project state document. The source-of-truth tracking file did not yet reflect the completed Phase 6 quality signal helpers.
+Quality signal helpers are now stable, but telemetry integration needs an explicit boundary before implementation to avoid leaking internal quality fields or mutating runtime behavior.
 
 ## Motivation
 
-Keeping `project_state.md` accurate reduces planning drift and makes future Phase 6 work easier to scope safely.
+Planning the telemetry boundary first keeps the next implementation slice small, safe, and aligned with internal-only visibility guarantees.
 
 ## Implementation
 
-- Updated completed Phase 6 implementation slices.
-- Added serialization, normalization, comparison, priority, sorting, and highest-priority helper completion notes.
-- Updated the stable internal quality helper list.
-- Updated the current validation baseline.
-- Updated the recommended next Phase 6 slices.
-
+- Added a quality signal telemetry integration plan.
+- Defined allowed and disallowed future behavior.
+- Documented the proposed future integration flow.
+- Added required guardrails before implementation.
+- Updated `project_state.md` with the new planning document and next recommended slice.
 ## Validation
 
 ```text
 ruff check .
-pytest -q    ## Pre-Flight Check
+pytest -q
+## Pre-Flight Check
 
 - [x] Public API response unchanged.
 - [x] No telemetry exposure changes.
