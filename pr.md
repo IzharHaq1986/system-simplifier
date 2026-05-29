@@ -1,31 +1,35 @@
 ## Summary
 
-Adds a Phase 6 quality signal telemetry integration plan.
+Adds internal quality signal preparation support to execution telemetry.
 
 ## Problem Statement
 
-Quality signal helpers are now stable, but telemetry integration needs an explicit boundary before implementation to avoid leaking internal quality fields or mutating runtime behavior.
+Quality signal helpers are stable, but execution telemetry did not yet have a controlled internal-only path for carrying serialized quality signal data.
 
 ## Motivation
 
-Planning the telemetry boundary first keeps the next implementation slice small, safe, and aligned with internal-only visibility guarantees.
+Preparing quality signal data internally enables future observability work while preserving public API stability and deterministic runtime behavior.
 
 ## Implementation
 
-- Added a quality signal telemetry integration plan.
-- Defined allowed and disallowed future behavior.
-- Documented the proposed future integration flow.
-- Added required guardrails before implementation.
-- Updated `project_state.md` with the new planning document and next recommended slice.
+- Added optional internal quality signal payload support to execution telemetry.
+- Serialized quality signals using the existing deterministic helper.
+- Preserved existing telemetry behavior when no quality signal is provided.
+- Added telemetry event validation coverage.
+- Added telemetry builder coverage.
+- Preserved public API boundaries.
 ## Validation
 
 ```text
 ruff check .
 pytest -q
+
+All checks passed!
+145 passed
 ## Pre-Flight Check
 
 - [x] Public API response unchanged.
-- [x] No telemetry exposure changes.
+- [x] No telemetry exposure changes to clients.
 - [x] No runtime control-flow mutation.
 - [x] No external I/O.
 - [x] No model calls.
