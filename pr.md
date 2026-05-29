@@ -1,22 +1,22 @@
 ## Summary
 
-Adds deterministic observability formatting for internal quality signals.
+Updates project_state.md to reflect completed Phase 6 work.
 
 ## Problem Statement
 
-Quality signals could be built, serialized, prioritized, and added to internal telemetry preparation, but there was no dedicated helper for stable observability text output.
+The repository implementation has completed Phase 6, but project_state.md does not yet reflect the final completion status and validation baseline.
 
 ## Motivation
 
-A deterministic observability formatter avoids ad-hoc internal log formatting and keeps future quality visibility consistent, internal-only, and easy to validate.
+Keeping project_state.md synchronized with repository reality preserves it as the authoritative project source of truth.
 
 ## Implementation
 
-- Added `format_quality_signal_for_observability`.
-- Reused existing quality signal priority behavior.
-- Exported the formatter through `app.evaluation`.
-- Added deterministic formatter test coverage.
-- Updated package and boundary export enforcement tests.
+- Marked Phase 6 as completed.
+- Added Phase 6 completion summary.
+- Updated validation baseline.
+- Preserved existing Phase 7 content unchanged.
+
 ## Validation
 
 ```text
@@ -28,7 +28,7 @@ All checks passed!
 ## Pre-Flight Check
 
 - [x] Public API response unchanged.
-- [x] No telemetry exposure changes to clients.
+- [x] No telemetry exposure changes.
 - [x] No runtime control-flow mutation.
 - [x] No external I/O.
 - [x] No model calls.
