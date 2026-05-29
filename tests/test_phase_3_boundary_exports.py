@@ -57,6 +57,7 @@ def test_evaluation_package_exports_only_intentional_boundaries() -> None:
         "get_quality_signal_priority",
         "get_highest_priority_quality_signal",
         "sort_quality_signals_by_priority",
+        "format_quality_signal_for_observability",
 }
 
     assert set(evaluation.__all__) == expected_exports

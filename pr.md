@@ -1,23 +1,22 @@
 ## Summary
 
-Adds internal quality signal preparation support to execution telemetry.
+Adds deterministic observability formatting for internal quality signals.
 
 ## Problem Statement
 
-Quality signal helpers are stable, but execution telemetry did not yet have a controlled internal-only path for carrying serialized quality signal data.
+Quality signals could be built, serialized, prioritized, and added to internal telemetry preparation, but there was no dedicated helper for stable observability text output.
 
 ## Motivation
 
-Preparing quality signal data internally enables future observability work while preserving public API stability and deterministic runtime behavior.
+A deterministic observability formatter avoids ad-hoc internal log formatting and keeps future quality visibility consistent, internal-only, and easy to validate.
 
 ## Implementation
 
-- Added optional internal quality signal payload support to execution telemetry.
-- Serialized quality signals using the existing deterministic helper.
-- Preserved existing telemetry behavior when no quality signal is provided.
-- Added telemetry event validation coverage.
-- Added telemetry builder coverage.
-- Preserved public API boundaries.
+- Added `format_quality_signal_for_observability`.
+- Reused existing quality signal priority behavior.
+- Exported the formatter through `app.evaluation`.
+- Added deterministic formatter test coverage.
+- Updated package and boundary export enforcement tests.
 ## Validation
 
 ```text
@@ -25,7 +24,7 @@ ruff check .
 pytest -q
 
 All checks passed!
-145 passed
+147 passed
 ## Pre-Flight Check
 
 - [x] Public API response unchanged.

@@ -19,6 +19,7 @@ from app.evaluation.quality import (
     quality_signals_match,
     get_quality_signal_priority,
     get_highest_priority_quality_signal,
+    format_quality_signal_for_observability,
 )
 
 
@@ -358,3 +359,37 @@ def test_get_highest_priority_quality_signal_returns_none_for_empty_list():
     highest_priority = get_highest_priority_quality_signal(signals=[])
 
     assert highest_priority is None
+
+def test_format_quality_signal_for_observability_returns_deterministic_text():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.NEEDS_REVIEW,
+        source="evaluation",
+        reason="manual review needed",
+    )
+
+    formatted = format_quality_signal_for_observability(signal=signal)
+
+    assert formatted == (
+        "quality_status=needs_review "
+        "quality_source=evaluation "
+        "quality_priority=1 "
+        "quality_reason=manual review needed"
+    )
+
+
+def test_format_quality_signal_for_observability_uses_blocked_priority():
+    signal = build_quality_signal(
+        status=QualitySignalStatus.BLOCKED,
+        source="response_policy",
+        reason="policy denied",
+        score=0,
+    )
+
+    formatted = format_quality_signal_for_observability(signal=signal)
+
+    assert formatted == (
+        "quality_status=blocked "
+        "quality_source=response_policy "
+        "quality_priority=2 "
+        "quality_reason=policy denied"
+    )
