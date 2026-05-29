@@ -1,14 +1,39 @@
 ## Summary
 
-- what changed (bullet list)
+- what changed
 - keep it minimal and specific
 
-## Description
+## Problem Statement
+
+Explain the problem this PR addresses.
+
+## Motivation
+
+Explain why this change is needed now.
+
+## Implementation
 
 Explain:
-- why this change exists
-- what problem it solves
-- what is intentionally NOT included
+- what changed
+- what was intentionally not included
+- why the change is minimal and reviewable
+
+## Validation
+
+- [ ] ruff check .
+- [ ] pytest -q
+- [ ] CI expected to pass
+
+## Pre-Flight Check
+
+- [ ] Public API response unchanged
+- [ ] No telemetry exposure changes
+- [ ] No runtime control-flow mutation
+- [ ] No external I/O
+- [ ] No model calls
+- [ ] No tool calls
+- [ ] No hidden mutable state
+- [ ] Deterministic behavior preserved
 
 ## Scope Check
 
@@ -22,24 +47,6 @@ Explain:
 - [ ] No unnecessary abstractions introduced
 - [ ] Aligns with project_state.md
 
-## Guardrails and Safety
-
-- [ ] Input validation preserved or improved
-- [ ] No unsafe behavior introduced
-- [ ] Trusted/untrusted boundaries respected
-
-## Validation
-
-- [ ] ruff check passes
-- [ ] pytest passes
-- [ ] CI expected to pass
-
-## Practical Filter
-
-- [ ] Ships value or reduces real risk
-- [ ] Will matter in 30–60 days
-- [ ] No unnecessary complexity added
-
 ## Notes
 
-- any additional context (optional)
+- any additional context, if needed
