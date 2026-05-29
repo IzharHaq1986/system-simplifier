@@ -250,3 +250,22 @@ def get_highest_priority_quality_signal(
         return None
 
     return sorted_signals[0]
+
+def format_quality_signal_for_observability(
+    *,
+    signal: QualitySignal,
+) -> str:
+    """
+    Format an internal quality signal for observability output.
+
+    This helper is deterministic, side-effect free, and internal-only.
+    """
+
+    priority = get_quality_signal_priority(signal=signal)
+
+    return (
+        f"quality_status={signal.status.value} "
+        f"quality_source={signal.source} "
+        f"quality_priority={priority} "
+        f"quality_reason={signal.reason}"
+    )

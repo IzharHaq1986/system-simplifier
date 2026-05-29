@@ -21,6 +21,7 @@ from app.evaluation import (
     get_quality_signal_priority,
     get_highest_priority_quality_signal,
     sort_quality_signals_by_priority,
+    format_quality_signal_for_observability
 )
 
 
@@ -47,3 +48,4 @@ def test_evaluation_package_exports_stable_contracts() -> None:
     assert get_quality_signal_priority is not None
     assert get_highest_priority_quality_signal is not None
     assert sort_quality_signals_by_priority is not None
+    assert format_quality_signal_for_observability is not None

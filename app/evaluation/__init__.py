@@ -29,6 +29,7 @@ from app.evaluation.quality import (
     get_quality_signal_priority,
     get_highest_priority_quality_signal,
     sort_quality_signals_by_priority,
+    format_quality_signal_for_observability,
 )
 
 __all__ = [
@@ -54,4 +55,5 @@ __all__ = [
     "get_quality_signal_priority",
     "get_highest_priority_quality_signal",
     "sort_quality_signals_by_priority",
+    "format_quality_signal_for_observability",
 ]
