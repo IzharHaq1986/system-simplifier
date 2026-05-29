@@ -69,3 +69,39 @@ def test_execution_telemetry_event_rejects_negative_text_length():
             runtime_outcome=RuntimeOutcome.SUCCESS,
             text_length=-1,
         )
+
+def test_execution_telemetry_event_defaults_quality_signal_to_none():
+    event = ExecutionTelemetryEvent(
+        trace_id="trace-123",
+        stage="execution",
+        decision_allowed=True,
+        execution_status="success",
+        runtime_outcome=RuntimeOutcome.SUCCESS,
+        text_length=25,
+    )
+
+    assert event.quality_signal is None
+
+
+def test_execution_telemetry_event_accepts_internal_quality_signal_payload():
+    event = ExecutionTelemetryEvent(
+        trace_id="trace-123",
+        stage="execution",
+        decision_allowed=True,
+        execution_status="success",
+        runtime_outcome=RuntimeOutcome.SUCCESS,
+        text_length=25,
+        quality_signal={
+            "status": "acceptable",
+            "source": "evaluation",
+            "reason": "evaluation passed",
+            "score": 100,
+        },
+    )
+
+    assert event.quality_signal == {
+        "status": "acceptable",
+        "source": "evaluation",
+        "reason": "evaluation passed",
+        "score": 100,
+    }
