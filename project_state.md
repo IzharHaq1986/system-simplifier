@@ -715,9 +715,10 @@ Current completed Phase 7 slice:
 - Pre-Flight checklist full acknowledgement enforcement review completed
 - Pre-Flight checklist full acknowledgement enforcement implementation plan completed
 - Pre-Flight checklist full acknowledgement enforcement implementation completed
+- Branch protection alignment review completed
 
 Current recommended next slice:
-- Branch protection alignment review
+- Required status check expansion review
 
 ### Objective
 Ensure the repo, PR workflow, CI/CD controls, and governance model support the intended system architecture and reliability goals.
