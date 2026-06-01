@@ -79,8 +79,30 @@ jobs:
               print("Missing '## Pre-Flight Check' section")
               sys.exit(1)
 
-          if "- [x]" not in body and "- [X]" not in body:
-              print("Pre-Flight checklist not acknowledged")
+          required_preflight_items = [
+              "Public API response unchanged",
+              "No telemetry exposure changes",
+              "No runtime control-flow mutation",
+              "No external I/O",
+              "No model calls",
+              "No tool calls",
+              "No hidden mutable state",
+              "Deterministic behavior preserved",
+          ]
+
+          missing_acknowledgements = []
+
+          for item in required_preflight_items:
+              checked_lower = f"- [x] {item}"
+              checked_upper = f"- [X] {item}"
+
+              if checked_lower not in body and checked_upper not in body:
+                  missing_acknowledgements.append(item)
+
+          if missing_acknowledgements:
+              print("Missing required Pre-Flight acknowledgements:")
+              for item in missing_acknowledgements:
+                  print(f"- {item}")
               sys.exit(1)
 
           print("Pre-Flight checklist enforcement passed.")
