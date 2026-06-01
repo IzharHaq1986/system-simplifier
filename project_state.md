@@ -718,9 +718,10 @@ Current completed Phase 7 slice:
 - Branch protection alignment review completed
 - Required status check expansion review completed
 - Release path planning review completed
+- Testing expectations review completed
 
 Current recommended next slice:
-- Testing expectations review
+- Repository governance alignment review
 
 ### Objective
 Ensure the repo, PR workflow, CI/CD controls, and governance model support the intended system architecture and reliability goals.
