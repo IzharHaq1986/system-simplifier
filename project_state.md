@@ -712,9 +712,10 @@ Current completed Phase 7 slice:
 - governance baseline review documented
 - PR template and pre-flight enforcement review completed
 - CI gate definition review completed
+- Pre-Flight checklist full acknowledgement enforcement review completed
 
 Current recommended next slice:
-- Pre-Flight checklist full acknowledgement enforcement review
+- Pre-Flight checklist full acknowledgement enforcement implementation
 
 ### Objective
 Ensure the repo, PR workflow, CI/CD controls, and governance model support the intended system architecture and reliability goals.
