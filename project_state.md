@@ -706,13 +706,14 @@ Delivered internal quality capabilities:
 
 Status:
 - started
-- governance baseline review in progress
+- governance baseline review completed
 
 Current completed Phase 7 slice:
 - governance baseline review documented
+- PR template and pre-flight enforcement review completed
 
 Current recommended next slice:
-- PR template and pre-flight enforcement review
+- CI gate definition review
 
 ### Objective
 Ensure the repo, PR workflow, CI/CD controls, and governance model support the intended system architecture and reliability goals.
