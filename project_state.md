@@ -851,6 +851,23 @@ Note:
 
 ## Phase 8 — Post-Minimum-Build Expansion
 
+### Phase 8 Current Status
+
+Status:
+
+- started
+- expansion decision framework completed
+- first execution slice completed
+- response envelope decision review completed
+- response envelope implementation plan completed
+- minimal response envelope candidate review completed
+
+Current recommendation:
+
+- defer response envelope implementation until measurable evidence justifies runtime or public response changes
+- preserve existing public API response contract
+- keep execution no-op until model/tool boundary is explicitly designed
+
 ### Objective
 Expand the system only after the architecture, reliability baseline, and minimum build are proven.
 
