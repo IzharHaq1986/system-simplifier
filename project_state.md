@@ -939,3 +939,46 @@ Phase 7:
 
 Phase 8:
 - expand only after evidence justifies it
+
+LinkedIn Articles
+
+Article 1 — Published
+
+Title:
+Why I Stopped Building AI Pipelines and Started Building Deterministic Systems
+
+Purpose:
+
+* Document the architectural evolution from pipeline-oriented design toward deterministic system architecture.
+* Explain the rationale behind reducing component sprawl.
+* Capture lessons learned around fail-closed behavior, validation discipline, governance, and maintainability.
+* Establish a public engineering journal for system-simplifier development.
+
+Supporting Assets:
+
+* Validation screenshot (main branch, passing tests).
+* Architecture screenshot (application boundary structure).
+* Repository governance screenshot (GitHub repository view).
+
+Status:
+
+* Published.
+
+Relationship to Project:
+
+* Informational only.
+* No code changes.
+* No API changes.
+* No runtime changes.
+* No telemetry changes.
+* No governance changes.
+* No architectural changes.
+
+Documents Current Project Direction:
+
+* deterministic runtime behavior
+* fail-closed validation
+* internal-only telemetry visibility
+* strict boundary enforcement
+* repository governance discipline
+* simplicity over pipeline expansion
